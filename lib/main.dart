@@ -1,7 +1,23 @@
-import 'package:flutter/material.dart';
-import 'package:focus_flow/focusFlowApp.dart';
 
+import 'package:flutter/material.dart';
 void main() {
-  runApp(const Focusflowapp());
+  runApp(const MyApp());
 }
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Focus Flow',
+      theme: ThemeData(
+      
+      ),
+    );
+  }
+}
+
 

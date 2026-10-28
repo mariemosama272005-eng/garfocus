@@ -13,6 +13,8 @@ class Focusflowapp extends StatelessWidget {
     return ScreenUtilInit(
       designSize: Size(390, 844),
       child: MaterialApp(
+       debugShowCheckedModeBanner: false,
+         title: 'Focus Flow',
         theme: ThemeData(
           fontFamily:'inter',
           scaffoldBackgroundColor: AppColors.scaffoldColor),

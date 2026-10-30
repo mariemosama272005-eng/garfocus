@@ -32,7 +32,7 @@ class MainbuttonWedgit extends StatelessWidget {
             color: bgColor ?? AppColors.mainColor,
             borderRadius: BorderRadius.circular(8.r)
           ), 
-          child: Text(title, style:AppTextstyle.hint.copyWith(
+          child: Text(title, style:AppTextstyle.hint24.copyWith(
             color: textColor ?? Colors.white
           ),
           ),

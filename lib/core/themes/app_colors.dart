@@ -5,6 +5,7 @@ class AppColors {
   static const Color scaffoldColor=Color(0xffFFFF);
   static const Color hintColor=Color(0xffD9D9D9);
   static const Color blackColor=Color(0xff000000);
+    static const Color borderColor=Color(0xffF7F8F9);
   
 
 

@@ -13,8 +13,13 @@ class AppTextstyle {
     color: AppColors.blackColor,
   );
 
-  static TextStyle hint = TextStyle(
+  static TextStyle hint24 = TextStyle(
     fontSize: 24,
     color: AppColors.hintColor,
   );
+  static TextStyle hintTextStyle=TextStyle(
+    fontSize: 15,
+color: AppColors.hintColor,
+  );
+
 }

@@ -9,8 +9,6 @@ import 'package:focus_flow/core/themes/app_textStyle.dart';
 import 'package:focus_flow/featue/Onboarding/presntation/cubit/cubit/on_boarding_cubit.dart';
 import 'package:focus_flow/featue/Onboarding/presntation/ui/wedgit/onBoarding_wedgit.dart';
 
-// import your SignInScreen
-// import 'package:focus_flow/.../sign_in_screen.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -38,7 +36,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       'subtitle2': 'distractions and get things done',
     },
     {
-      'image': 'assets/images/onboarding2.png',
+      'image': 'assets/images/onboarding3.png',
       'title': 'A Calmer Mind',
       'title2': 'A More Focused You',
       'subtitle': 'Use Personalized Tools like',

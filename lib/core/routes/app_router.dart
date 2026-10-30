@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:focus_flow/core/routes/app_routes.dart';
 import 'package:focus_flow/featue/Authentication/presntation/ui/login_screen.dart';
+import 'package:focus_flow/featue/Authentication/presntation/ui/register_screen.dart';
+import 'package:focus_flow/featue/Home/presntation/ui/home_screen.dart';
 import 'package:focus_flow/featue/Onboarding/presntation/ui/onborading_screen.dart';
 
 class AppRouter {
@@ -10,6 +12,10 @@ class AppRouter {
         return MaterialPageRoute(builder:(_)=>OnboardingScreen());
       case AppRoutes.loginScreen:
         return MaterialPageRoute(builder:(_)=>LoginScreen());
+      case AppRoutes.homeScreen:
+        return MaterialPageRoute(builder:(_)=>HomeScreen());
+      case AppRoutes.registerScreen:
+        return MaterialPageRoute(builder:(_)=>RegisterScreen());
      }
      }
   

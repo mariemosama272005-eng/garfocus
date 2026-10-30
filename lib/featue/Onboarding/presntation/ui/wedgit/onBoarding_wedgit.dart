@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import 'package:focus_flow/core/themes/app_colors.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class OnBoardingWedgit extends StatelessWidget {
   final PageController pageController;
-  final List<Map<String, String>> onboardingData;
+  final List<Map<String, dynamic>> onboardingData;
   final int currentIndex;
   final Function(int) onPageChanged;
 
@@ -31,8 +32,7 @@ class OnBoardingWedgit extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(
                   horizontal: 31,
                 ),
-                child: Image.asset(
-                  onboardingData[index]['image']!,
+                child: onboardingData[index]['image'].image(
                   fit: BoxFit.contain,
                 ),
               );

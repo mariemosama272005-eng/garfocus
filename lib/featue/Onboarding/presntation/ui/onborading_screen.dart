@@ -1,14 +1,13 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:focus_flow/core/routes/app_routes.dart';
-
 import 'package:focus_flow/core/shared_wedgits/costumButton_wedgit.dart';
 import 'package:focus_flow/core/themes/app_textStyle.dart';
-
 import 'package:focus_flow/featue/Onboarding/presntation/cubit/cubit/on_boarding_cubit.dart';
 import 'package:focus_flow/featue/Onboarding/presntation/ui/wedgit/onBoarding_wedgit.dart';
-
+import 'package:focus_flow/gen/assets.gen.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -20,23 +19,23 @@ class OnboardingScreen extends StatefulWidget {
 class _OnboardingScreenState extends State<OnboardingScreen> {
   final PageController _pageController = PageController();
 
-  final List<Map<String, String>> onboardingData = [
+  final List<Map<String, dynamic>> onboardingData = [
     {
-      'image': 'assets/images/onboarding1.png',
+      'image': Assets.images.onboarding1,
       'title': 'Small Steps',
       'title2': 'Big Progress',
       'subtitle': 'Break Your goals into simple steps',
       'subtitle2': 'and build better nabits',
     },
     {
-      'image': 'assets/images/onboarding2.png',
+      'image': Assets.images.onboarding2,
       'title': 'Stay Focused',
       'title2': 'Achieve More',
       'subtitle': 'Track your time, reduce',
       'subtitle2': 'distractions and get things done',
     },
     {
-      'image': 'assets/images/onboarding3.png',
+      'image': Assets.images.onBoarding3,
       'title': 'A Calmer Mind',
       'title2': 'A More Focused You',
       'subtitle': 'Use Personalized Tools like',
@@ -71,25 +70,21 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               return Column(
                 children: [
                   Text(
-                    onboardingData[currentIndex]['title']!,
+                    onboardingData[currentIndex]['title'] as String,
                     style: AppTextstyle.h1,
                   ),
-
                   Text(
-                    onboardingData[currentIndex]['title2']!,
+                    onboardingData[currentIndex]['title2'] as String,
                     style: AppTextstyle.h1,
                   ),
-
                   Text(
-                    onboardingData[currentIndex]['subtitle']!,
+                    onboardingData[currentIndex]['subtitle'] as String,
                     style: AppTextstyle.h2,
                   ),
-
                   Text(
-                    onboardingData[currentIndex]['subtitle2']!,
+                    onboardingData[currentIndex]['subtitle2'] as String,
                     style: AppTextstyle.h2,
                   ),
-
                   Expanded(
                     flex: 3,
                     child: OnBoardingWedgit(
@@ -103,9 +98,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       },
                     ),
                   ),
-
                   20.verticalSpace,
-
                   MainbuttonWedgit(
                     title: isLastPage ? 'Get Started' : 'Next',
                     onTap: () {
@@ -115,13 +108,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           curve: Curves.easeInOut,
                         );
                       } else {
-                          Navigator.pushNamed(context, AppRoutes.loginScreen);
-                          
-                        
+                        Navigator.pushNamed(
+                          context,
+                          AppRoutes.loginScreen,
+                        );
                       }
                     },
                   ),
-
                   20.verticalSpace,
                 ],
               );

@@ -35,17 +35,27 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
   flutter_native_splash: ^2.4.8
-  flutter_launcher_icons: ^0.14.4
   flutter_screenutil: ^5.9.3
   flutter_bloc: ^9.1.1
   carousel_slider: ^5.1.2
   smooth_page_indicator: ^3.0.0
+  flutter_launcher_icons: ^0.14.4
 
-dev_dependencies:
-  flutter_test:
-    sdk: flutter
-  build_runner: ^2.12.0
-  flutter_gen_runner:
+flutter_test:
+   sdk: flutter
+   build_runner: ^2.12.0
+   flutter_gen_runner:
+
+   flutter_launcher_icons:
+     android: "launcher_icon"
+     ios: true
+     image_path: "assets/images/logo3.png"
+     min_sdk_android: 21 # android min sdk min:16, default 21
+   web:
+     generate: true
+     image_path: "assets/images/logo3.png"
+     background_color: "#hexcode"
+     theme_color: "#hexcode"
 
 
   # The "flutter_lints" package below contains a set of recommended lints to
@@ -53,7 +63,7 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^6.0.0
+   flutter_lints: ^6.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -64,13 +74,16 @@ flutter:
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
-  uses-material-design: true
+
+  
+
+   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
  # assets:
    # - assets\images\logo4.png
   #   - images/a_dot_ham.jpeg
-  assets:
+   assets:
     - assets/images/
   
 
@@ -85,7 +98,7 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  fonts:
+   fonts:
     - family: inter
       fonts:
         - asset: assets\fonts\Inter-VariableFont_opsz,wght.ttf
@@ -99,21 +112,6 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
-
- # flutter_launcher_icons:
- #android: "launcher_icon"
- #ios: true
- # image_path: "assets/images/logo3.png"
-  # min_sdk_android: 21 # android min sdk min:16, default 21
-  # web:
-  #   generate: true
-  #   image_path: "assets/images/logo3.png"
-  #   background_color: "#hexcode"
-  #   theme_color: "#hexcode"
-  # windows:
-  #   generate: true
-  #   image_path: "assets/images/logo3.png"
-  #   icon_size: 48 # min:48, max:256, default: 48
-  # macos:
-  #   generate: true
-  #   image_path: "assets/images/logo3.png"
+   
+ 
+  

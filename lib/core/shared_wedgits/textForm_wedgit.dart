@@ -11,7 +11,9 @@ class TextformWedgit extends StatefulWidget {
    final bool? autoFocus;
    final TextEditingController? controller;
    final void Function(String?)?onChanged;
-   const TextformWedgit({this.onChanged, this.autoFocus, required this.controller, this.validator,this.isPass=false,required this.hintT,super.key});
+   final int? maxLines;
+  final int? minLines;
+   const TextformWedgit({this.maxLines=1, this.minLines=1, this.onChanged, this.autoFocus, required this.controller, this.validator,this.isPass=false,required this.hintT,super.key});
 
   @override
   State<TextformWedgit> createState() => _TextformWedgitState();
@@ -27,6 +29,8 @@ class _TextformWedgitState extends State<TextformWedgit> {
       controller: widget.controller,
       validator: widget.validator,
       onChanged: widget.onChanged,
+      maxLines: widget.maxLines,
+      minLines: widget.minLines,
       onTapOutside: (v){
         FocusScope.of(context).unfocus();
       },

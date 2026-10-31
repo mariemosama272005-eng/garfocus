@@ -12,6 +12,7 @@ class RegisterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Padding(
         padding: const EdgeInsets.all(22),
         child: Column(
@@ -31,6 +32,8 @@ class RegisterScreen extends StatelessWidget {
 
             Align(
               alignment: Alignment.bottomCenter,
+              child: FittedBox(
+                   fit: BoxFit.scaleDown,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -53,6 +56,7 @@ class RegisterScreen extends StatelessWidget {
                     ),
                   ),
                 ],
+                 ),
               ),
             ),
           ],

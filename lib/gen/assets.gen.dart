@@ -29,6 +29,14 @@ class $AssetsImagesGen {
   /// File path: assets/images/onboarding2.png
   AssetGenImage get onboarding2 =>
       const AssetGenImage('assets/images/onboarding2.png');
+  AssetGenImage get password1 =>
+      const AssetGenImage('assets/images/password1.png');
+  AssetGenImage get password2  =>
+      const AssetGenImage('assets/images/password2.png');
+  AssetGenImage get password3  =>
+      const AssetGenImage('assets/images/password3.png');
+  AssetGenImage get password4 =>
+      const AssetGenImage('assets/images/password4.png');
 
   /// List of all assets
   List<AssetGenImage> get values => [
@@ -36,6 +44,10 @@ class $AssetsImagesGen {
     onBoarding3,
     onboarding1,
     onboarding2,
+    password1,
+    password2,
+    password3,
+    password4,
   ];
 }
 

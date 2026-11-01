@@ -21,5 +21,10 @@ class AppTextstyle {
     fontSize: 15,
 color: AppColors.hintColor,
   );
-
+  
+  static TextStyle subTitle = TextStyle(
+    fontSize: 15,
+    color: AppColors.blackColor,
+    height: 1.4,
+  );
 }

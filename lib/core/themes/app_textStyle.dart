@@ -18,8 +18,9 @@ class AppTextstyle {
     color: AppColors.hintColor,
   );
   static TextStyle hintTextStyle=TextStyle(
-    fontSize: 15,
+    fontSize: 18,
 color: AppColors.hintColor,
+
   );
   
   static TextStyle subTitle = TextStyle(

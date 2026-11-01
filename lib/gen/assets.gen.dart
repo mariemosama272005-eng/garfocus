@@ -37,6 +37,8 @@ class $AssetsImagesGen {
       const AssetGenImage('assets/images/password3.png');
   AssetGenImage get password4 =>
       const AssetGenImage('assets/images/password4.png');
+       AssetGenImage get repot=>
+      const AssetGenImage('assets/images/repot.png');
 
   /// List of all assets
   List<AssetGenImage> get values => [
@@ -48,6 +50,7 @@ class $AssetsImagesGen {
     password2,
     password3,
     password4,
+    repot,
   ];
 }
 

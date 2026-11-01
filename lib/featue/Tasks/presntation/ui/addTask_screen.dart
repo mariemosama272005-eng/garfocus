@@ -174,11 +174,11 @@ TextformWedgit(
              30.verticalSpace,
              Center(child: Text("Or",style: AppTextstyle.hint24,)),
           20.verticalSpace,
-              MainbuttonWedgit(title: " ✨Create with Ai",),
-              //onTap: (){
-                //Navigator.push(context,processing Screen )
-              //},
-              
+              MainbuttonWedgit(title: " ✨Create with Ai",
+              onTap: (){
+              Navigator.pushNamed(context,AppRoutes.aiCreatingPlanScreen);
+              },
+              ),
         
 25.verticalSpace,
             ],

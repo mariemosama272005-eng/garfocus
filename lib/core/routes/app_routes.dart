@@ -6,6 +6,7 @@ static const String registerScreen="RegisterScreen";
 static const String forgetpassScreen="ForgetPasswordScreen";
 static const String homeScreen="HomeScreen";
 static const String addTaskScreen="AddTaskScreen";
+static const String aiCreatingPlanScreen="AiCreatingPlanScreen";
 
 
 }

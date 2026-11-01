@@ -29,6 +29,8 @@ class $AssetsImagesGen {
   /// File path: assets/images/onboarding2.png
   AssetGenImage get onboarding2 =>
       const AssetGenImage('assets/images/onboarding2.png');
+       AssetGenImage get repot=>
+      const AssetGenImage('assets/images/repot.png');
 
   /// List of all assets
   List<AssetGenImage> get values => [
@@ -36,6 +38,7 @@ class $AssetsImagesGen {
     onBoarding3,
     onboarding1,
     onboarding2,
+    repot,
   ];
 }
 

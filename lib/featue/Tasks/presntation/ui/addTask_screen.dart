@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:focus_flow/core/routes/app_routes.dart';
 import 'package:focus_flow/core/shared_wedgits/appBar_wedgit.dart';
 import 'package:focus_flow/core/shared_wedgits/costumButton_wedgit.dart';
 import 'package:focus_flow/core/shared_wedgits/textForm_wedgit.dart';
 import 'package:focus_flow/core/themes/app_colors.dart';
 import 'package:focus_flow/core/themes/app_textStyle.dart';
+import 'package:focus_flow/featue/Home/presntation/ui/home_screen.dart';
 import 'package:focus_flow/featue/Tasks/presntation/ui/wedgit/task_option_widget.dart';
 
 class AddTaskScreen extends StatefulWidget {
@@ -166,7 +168,12 @@ TextformWedgit(
 ),
 
              30.verticalSpace,
-          
+             MainbuttonWedgit(title:"Set Task",onTap: (){
+              Navigator.pushNamed(context, AppRoutes.homeScreen);
+             },),
+             30.verticalSpace,
+             Center(child: Text("Or",style: AppTextstyle.hint24,)),
+          20.verticalSpace,
               MainbuttonWedgit(title: " ✨Create with Ai",),
               //onTap: (){
                 //Navigator.push(context,processing Screen )

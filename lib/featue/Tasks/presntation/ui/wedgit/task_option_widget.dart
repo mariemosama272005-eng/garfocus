@@ -116,11 +116,10 @@ class TaskOptionWidget extends StatelessWidget {
         );
       },
       child: Container(
-        height: 64.h,
-        padding: EdgeInsets.symmetric(horizontal: 14.w),
+   padding: EdgeInsets.symmetric(horizontal: 14.w),
         decoration: BoxDecoration(
           border: Border.all(
-            color: const Color(0xFFE1E7F0),
+            color:AppColors.borderColor,
           ),
           borderRadius: BorderRadius.circular(10.r),
         ),
@@ -128,7 +127,7 @@ class TaskOptionWidget extends StatelessWidget {
           children: [
             Container(
               width: 40.w,
-              height: 40.h,
+       
               decoration: BoxDecoration(
                 color: currentColor.withOpacity(0.10),
                 borderRadius: BorderRadius.circular(10.r),
@@ -139,13 +138,13 @@ class TaskOptionWidget extends StatelessWidget {
                 color: currentColor,
               ),
             ),
-            SizedBox(width: 13.w),
+            13.horizontalSpace,
             Expanded(
               child: Text(
                 title,
                 style: TextStyle(
-                  color: const Color(0xFF8792A5),
-                  fontSize: 16.sp,
+                  color:AppColors.hintColor,
+                  fontSize: 16,
                 ),
               ),
             ),
@@ -157,11 +156,11 @@ class TaskOptionWidget extends StatelessWidget {
                 fontWeight: FontWeight.w500,
               ),
             ),
-            SizedBox(width: 12.w),
+           12.horizontalSpace,
             Icon(
               Icons.arrow_forward_ios,
               size: 15.sp,
-              color: const Color(0xFF8792A5),
+              color: AppColors.blackColor,
             ),
           ],
         ),

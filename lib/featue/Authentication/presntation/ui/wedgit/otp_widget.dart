@@ -26,12 +26,12 @@ class OtpWidget extends StatelessWidget {
           24.verticalSpace,
           Text(
             "OTP Verification",
-            style: AppTextstyle.h1,
+            style: AppTextstyle.h1(context),
           ),
           8.verticalSpace,
           Text(
             "Enter the verification code we just sent on your email address.",
-            style: AppTextstyle.subTitle,
+            style: AppTextstyle.subTitle(context),
           ),
           32.verticalSpace,
           Row(

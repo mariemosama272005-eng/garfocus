@@ -7,7 +7,7 @@ import 'package:focus_flow/featue/Authentication/presntation/ui/otp_screen.dart'
 import 'package:focus_flow/featue/Authentication/presntation/ui/create_new_password_screen.dart';
 import 'package:focus_flow/featue/Home/presntation/ui/home_screen.dart';
 import 'package:focus_flow/featue/Onboarding/presntation/ui/onborading_screen.dart';
-import 'package:focus_flow/featue/Settings/apperance_screen.dart';
+import 'package:focus_flow/featue/Settings/presntation/ui/apperance_screen.dart';
 import 'package:focus_flow/featue/Tasks/presntation/ui/addTask_screen.dart';
 import 'package:focus_flow/featue/Tasks/presntation/ui/ai_creating_plan_screen.dart';
 

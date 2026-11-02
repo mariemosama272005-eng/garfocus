@@ -21,7 +21,7 @@ class LoginScreen extends StatelessWidget {
 
             Text(
               "Welcome back!\nGlad to see you,\nAgain!",
-              style: AppTextstyle.h1,
+              style: AppTextstyle.h1(context),
             ),
 
             32.verticalSpace,
@@ -37,7 +37,7 @@ class LoginScreen extends StatelessWidget {
                 children: [
                   Text(
                     "No Account? ",
-                    style: AppTextstyle.h2,
+                    style: AppTextstyle.h2(context),
                   ),
 
                   InkWell(
@@ -49,7 +49,7 @@ class LoginScreen extends StatelessWidget {
                     },
                     child: Text(
                       "Register Now",
-                      style: AppTextstyle.h2.copyWith(
+                      style: AppTextstyle.h2(context).copyWith(
                         color: AppColors.mainColor,
                       ),
                     ),

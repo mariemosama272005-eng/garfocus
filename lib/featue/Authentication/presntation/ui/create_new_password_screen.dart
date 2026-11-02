@@ -45,16 +45,16 @@ class _CreateNewPasswordScreenState
                 Assets.images.password4.image(),
                 20.verticalSpace,
                 Text(
-                  "Password Changed!",
-                  style: AppTextstyle.h2.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
+  "Password Changed!",
+  style: AppTextstyle.h2(context).copyWith(
+    fontWeight: FontWeight.bold,
+  ),
+  textAlign: TextAlign.center,
+),
                 10.verticalSpace,
                 Text(
                   "Your password has been changed successfully.",
-                  style: AppTextstyle.subTitle,
+                  style: AppTextstyle.subTitle(context),
                   textAlign: TextAlign.center,
                 ),
                 24.verticalSpace,

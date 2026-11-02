@@ -35,12 +35,12 @@ class ForgetPasswordWidget extends StatelessWidget {
             24.verticalSpace,
             Text(
               "Forget Password?",
-              style: AppTextstyle.h1,
+              style: AppTextstyle.h1(context),
             ),
             8.verticalSpace,
             Text(
               "Enter your email or phone number to receive a reset link.",
-              style: AppTextstyle.subTitle,
+              style: AppTextstyle.subTitle(context),
             ),
             32.verticalSpace,
             TextformWedgit(

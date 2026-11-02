@@ -66,7 +66,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                     Expanded(
                       child: Text(
                         'Let AI help you create the best plan',
-                        style: AppTextstyle.hintTextStyle,
+                        style: AppTextstyle.hintTextStyle(context),
                       ),
                     ),
                   ],
@@ -77,7 +77,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
 
               Text(
                 'What do you want to do ?',
-                style: AppTextstyle.h2.copyWith(fontWeight: FontWeight.bold),
+                style: AppTextstyle.h2(context).copyWith(fontWeight: FontWeight.bold),
               ),
 12.verticalSpace,
 
@@ -91,7 +91,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
 
               Text(
                 'Additional details ( optional )',
-                   style: AppTextstyle.h2.copyWith(fontWeight: FontWeight.bold),
+                   style: AppTextstyle.h2(context).copyWith(fontWeight: FontWeight.bold),
                 
               ),
               
@@ -172,7 +172,7 @@ TextformWedgit(
               Navigator.pushNamed(context, AppRoutes.homeScreen);
              },),
              30.verticalSpace,
-             Center(child: Text("Or",style: AppTextstyle.hint24,)),
+             Center(child: Text("Or",style: AppTextstyle.hint24(context),)),
           20.verticalSpace,
               MainbuttonWedgit(title: " ✨Create with Ai",
               onTap: (){

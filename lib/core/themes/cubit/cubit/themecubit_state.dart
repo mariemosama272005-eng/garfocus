@@ -1,16 +1,27 @@
+
 part of 'themecubit_cubit.dart';
 
-@immutable
-sealed class ThemecubitState {}
-
-final class ThemecubitInitial extends ThemecubitState {
-   final Color color;
-
-  ThemecubitInitial(this.color);
+enum AppThemeMode {
+  light,
+  dark,
+  system,
 }
 
-class ThemecubitChangeColor extends ThemecubitState {
+@immutable
+class ThemecubitState {
   final Color color;
+  final AppThemeMode themeMode;
 
-  ThemecubitChangeColor(this.color);
+  const ThemecubitState({
+    required this.color,
+    required this.themeMode,
+  });
+}
+
+final class ThemecubitInitial extends ThemecubitState {
+  const ThemecubitInitial()
+      : super(
+          color: AppColors.mainColor,
+          themeMode: AppThemeMode.system,
+        );
 }

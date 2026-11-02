@@ -81,7 +81,7 @@ class _LoginFormState extends State<LoginForm> {
               },
               child: Text(
                 "Forget Password",
-                style: AppTextstyle.hintTextStyle,
+                style: AppTextstyle.hintTextStyle(context),
               ),
             ),
           ),

@@ -32,12 +32,12 @@ class CreateNewPasswordWidget extends StatelessWidget {
         24.verticalSpace,
         Text(
           "Create new password",
-          style: AppTextstyle.h1,
+          style: AppTextstyle.h1(context),
         ),
         8.verticalSpace,
         Text(
           "Your new password must be unique from those previously used.",
-          style: AppTextstyle.subTitle,
+          style: AppTextstyle.subTitle(context),
         ),
         32.verticalSpace,
         TextformWedgit(

@@ -42,7 +42,7 @@ class AiCreatingPlanScreen extends StatelessWidget {
               Text(
                 'AI is creating your plan ...',
                 textAlign: TextAlign.center,
-                style: AppTextstyle.h2,
+                style: AppTextstyle.h2(context),
               ),
 
             18.verticalSpace,
@@ -53,7 +53,7 @@ class AiCreatingPlanScreen extends StatelessWidget {
                 'category, urgency and organizing it\n'
                 'into your schedule.',
                 textAlign: TextAlign.center,
-                style: AppTextstyle.hintTextStyle
+                style: AppTextstyle.hintTextStyle(context)
                 ),
               
 

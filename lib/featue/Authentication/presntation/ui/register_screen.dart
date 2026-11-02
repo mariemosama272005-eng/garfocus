@@ -21,7 +21,7 @@ class RegisterScreen extends StatelessWidget {
 
             Text(
               "Hello! Register to\nget started",
-              style: AppTextstyle.h1,
+              style: AppTextstyle.h1(context),
             ),
 
             32.verticalSpace,
@@ -39,7 +39,7 @@ class RegisterScreen extends StatelessWidget {
                 children: [
                   Text(
                     "Already have an account? ",
-                    style: AppTextstyle.h2,
+                    style: AppTextstyle.h2(context),
                   ),
                   InkWell(
                     onTap: () {
@@ -50,7 +50,7 @@ class RegisterScreen extends StatelessWidget {
                     },
                     child: Text(
                       "Login Now",
-                      style: AppTextstyle.h2.copyWith(
+                      style: AppTextstyle.h2(context).copyWith(
                         color: AppColors.mainColor,
                       ),
                     ),

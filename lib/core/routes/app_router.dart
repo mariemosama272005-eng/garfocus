@@ -7,6 +7,7 @@ import 'package:focus_flow/featue/Authentication/presntation/ui/otp_screen.dart'
 import 'package:focus_flow/featue/Authentication/presntation/ui/create_new_password_screen.dart';
 import 'package:focus_flow/featue/Home/presntation/ui/home_screen.dart';
 import 'package:focus_flow/featue/Onboarding/presntation/ui/onborading_screen.dart';
+import 'package:focus_flow/featue/Settings/apperance_screen.dart';
 import 'package:focus_flow/featue/Tasks/presntation/ui/addTask_screen.dart';
 import 'package:focus_flow/featue/Tasks/presntation/ui/ai_creating_plan_screen.dart';
 
@@ -27,15 +28,13 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => CreateNewPasswordScreen());
       case AppRoutes.homeScreen:
         return MaterialPageRoute(builder: (_) => HomeScreen());
-      default:
-        return null;
-    }
-  }
-        return MaterialPageRoute(builder:(_)=>RegisterScreen());
       case AppRoutes.addTaskScreen:
         return MaterialPageRoute(builder:(_)=>AddTaskScreen());
       case AppRoutes.aiCreatingPlanScreen:
         return MaterialPageRoute(builder:(_)=>AiCreatingPlanScreen());
+      case AppRoutes.apperanceScreen:
+        return MaterialPageRoute(builder:(_)=>AppearanceScreen());
+      
       
      }
      }

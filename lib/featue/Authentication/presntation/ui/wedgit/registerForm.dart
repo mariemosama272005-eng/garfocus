@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,7 +13,6 @@ class RegisterForm extends StatefulWidget {
   @override
   State<RegisterForm> createState() => _RegisterFormState();
 }
-
 class _RegisterFormState extends State<RegisterForm> {
   var formState = GlobalKey<FormState>();
   var nameController = TextEditingController();
@@ -23,7 +21,6 @@ class _RegisterFormState extends State<RegisterForm> {
   var confirmPassController = TextEditingController();
   var addressController = TextEditingController();
   var cityController = TextEditingController();
-
   @override
   void dispose() {
     nameController.dispose();
@@ -34,7 +31,6 @@ class _RegisterFormState extends State<RegisterForm> {
     cityController.dispose();
     super.dispose();
   }
-
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -85,8 +81,6 @@ class _RegisterFormState extends State<RegisterForm> {
             },
           ),
           15.verticalSpace,
-          
-          
           TextformWedgit(
             controller: confirmPassController,
             hintT: "Confirm password", 
@@ -102,11 +96,8 @@ class _RegisterFormState extends State<RegisterForm> {
             },
           ),
           15.verticalSpace,
-    
-         
-          30.verticalSpace,
-          
-          
+  
+          30.verticalSpace,   
           MainbuttonWedgit(
   title: "Register",
   onTap: () {

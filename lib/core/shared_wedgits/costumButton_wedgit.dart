@@ -29,7 +29,7 @@ class MainbuttonWedgit extends StatelessWidget {
           padding: EdgeInsets.symmetric(vertical: 16.h),
           alignment: Alignment.center,
           decoration: BoxDecoration(
-            color: bgColor ?? AppColors.mainColor,
+            color: bgColor ?? Theme.of(context).colorScheme.primary,
             borderRadius: BorderRadius.circular(8.r)
           ), 
           child: Text(title, style:AppTextstyle.hint24.copyWith(

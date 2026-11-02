@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:focus_flow/core/shared_wedgits/appBar_wedgit.dart';
 import 'package:focus_flow/featue/Settings/presntation/ui/wedgit/color_picker_widget.dart';
 import 'package:focus_flow/featue/Settings/presntation/ui/wedgit/theme_mode_selector.dart';
 import 'package:focus_flow/featue/Settings/presntation/ui/wedgit/theme_preview_widget.dart';
@@ -13,16 +14,15 @@ class AppearanceScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Appearance'),
-        centerTitle: true,
-      ),
-      body: SingleChildScrollView(
+     
+      body: 
+      SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.all(20.w),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              AppbarWedgit(title: "Apperance"),
               Text(
                 'Customize your experience',
                 style: TextStyle(

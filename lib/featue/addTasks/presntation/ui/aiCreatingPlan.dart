@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:focus_flow/core/shared_wedgits/appBar_wedgit.dart';
 import 'package:focus_flow/core/themes/app_colors.dart';
 import 'package:focus_flow/core/themes/app_textStyle.dart';
-import 'package:focus_flow/featue/Tasks/presntation/ui/wedgit/stepWedgit.dart';
+import 'package:focus_flow/featue/addTasks/presntation/ui/widgets/aiStep_widget.dart';
 import 'package:focus_flow/gen/assets.gen.dart';
 
 class AiCreatingPlanScreen extends StatelessWidget {

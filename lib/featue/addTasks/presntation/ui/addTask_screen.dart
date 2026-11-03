@@ -1,14 +1,22 @@
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import 'package:focus_flow/core/routes/app_routes.dart';
 import 'package:focus_flow/core/shared_wedgits/appBar_wedgit.dart';
 import 'package:focus_flow/core/shared_wedgits/costumButton_wedgit.dart';
 import 'package:focus_flow/core/shared_wedgits/textForm_wedgit.dart';
 import 'package:focus_flow/core/themes/app_colors.dart';
 import 'package:focus_flow/core/themes/app_textStyle.dart';
-import 'package:focus_flow/featue/Tasks/presntation/ui/wedgit/deadline_widgrt.dart';
+import 'package:focus_flow/featue/addTasks/presntation/ui/widgets/deadline_widget.dart';
+import 'package:focus_flow/featue/addTasks/presntation/ui/widgets/taskOption_widget.dart';
+import 'package:focus_flow/featue/tasks/Data/models/task_model.dart';
 
-import 'package:focus_flow/featue/Tasks/presntation/ui/wedgit/task_option_widget.dart';
+import 'package:focus_flow/featue/tasks/data/models/task_model.dart' hide TaskModel;
+import 'package:focus_flow/featue/tasks/presentation/cubit/cubit/task_cubit_cubit.dart';
+
+
 
 class AddTaskScreen extends StatefulWidget {
   const AddTaskScreen({super.key});
@@ -18,17 +26,16 @@ class AddTaskScreen extends StatefulWidget {
 }
 
 class _AddTaskScreenState extends State<AddTaskScreen> {
-  final TextEditingController titleController = TextEditingController();
+  final TextEditingController titleController =
+      TextEditingController();
 
   final TextEditingController detailsController =
       TextEditingController();
 
   String category = 'Personal';
-
   String priority = 'Medium';
 
   DateTime? deadlineDate;
-
   TimeOfDay? deadlineTime;
 
   @override
@@ -61,27 +68,48 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
     });
   }
 
+  Future<void> saveTask() async {
+  int? deadlineMinutes;
+
+  if (deadlineTime != null) {
+    deadlineMinutes =
+        deadlineTime!.hour * 60 + deadlineTime!.minute;
+  }
+
+  final TaskModel task = TaskModel(
+    title: titleController.text.trim(),
+    details: detailsController.text.trim(),
+    category: category,
+    deadlineDate: deadlineDate,
+    deadlineMinutes: deadlineMinutes,
+    priority: priority,
+    status: 'pending',
+  );
+
+  await context.read<TaskCubitCubit>().addTask(task);
+
+  if (!mounted) return;
+
+  Navigator.pushReplacementNamed(
+    context,
+    AppRoutes.taskScreen,
+  );
+}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor:
           Theme.of(context).scaffoldBackgroundColor,
-
       body: SafeArea(
         child: SingleChildScrollView(
           padding: EdgeInsets.symmetric(horizontal: 24.w),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-
-              // App Bar
-              const AppbarWedgit(
-                title: "Add Task",
-              ),
+              const AppbarWedgit(title: "Add Task"),
 
               25.verticalSpace,
 
-              // AI Hint
               Container(
                 width: double.infinity,
                 padding: EdgeInsets.symmetric(
@@ -101,14 +129,13 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                           .colorScheme
                           .primary,
                     ),
-
                     SizedBox(width: 10.w),
-
                     Expanded(
                       child: Text(
                         'Let AI help you create the best plan',
-                        style:
-                            AppTextstyle.hintTextStyle(context),
+                        style: AppTextstyle.hintTextStyle(
+                          context,
+                        ),
                       ),
                     ),
                   ],
@@ -117,14 +144,11 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
 
               28.verticalSpace,
 
-              // Task Title
               Text(
                 'What do you want to do ?',
-                style: AppTextstyle
-                    .h2(context)
-                    .copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+                style: AppTextstyle.h2(context).copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
               ),
 
               12.verticalSpace,
@@ -137,19 +161,15 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
 
               25.verticalSpace,
 
-              // Additional Details
               Text(
                 'Additional details ( optional )',
-                style: AppTextstyle
-                    .h2(context)
-                    .copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+                style: AppTextstyle.h2(context).copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
               ),
 
               14.verticalSpace,
 
-              // Category
               TaskOptionWidget(
                 icon: Icons.category_outlined,
                 title: 'Category',
@@ -173,7 +193,6 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
 
               12.verticalSpace,
 
-              // Deadline
               DeadlineOptionWidget(
                 selectedDate: deadlineDate,
                 selectedTime: deadlineTime,
@@ -182,7 +201,6 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
 
               12.verticalSpace,
 
-              // Priority
               TaskOptionWidget(
                 icon: Icons.flag_outlined,
                 title: 'Priority / Urgency',
@@ -202,7 +220,6 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
 
               18.verticalSpace,
 
-              // Details
               TextformWedgit(
                 controller: detailsController,
                 hintT: 'Add more details about your task...',
@@ -211,15 +228,10 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
 
               30.verticalSpace,
 
-              // Set Task
               MainbuttonWedgit(
                 title: "Set Task",
-                onTap: () {
-                  Navigator.pushNamed(
-                    context,
-                    AppRoutes.homeScreen,
-                  );
-                },
+                onTap: saveTask,
+
               ),
 
               30.verticalSpace,
@@ -233,7 +245,6 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
 
               20.verticalSpace,
 
-              // AI
               MainbuttonWedgit(
                 title: "✨ Create with AI",
                 onTap: () {

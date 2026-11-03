@@ -50,7 +50,7 @@ class LoginScreen extends StatelessWidget {
                     child: Text(
                       "Register Now",
                       style: AppTextstyle.h2(context).copyWith(
-                        color: AppColors.mainColor,
+                        color: Theme.of(context).colorScheme.primary,
                       ),
                     ),
                   ),

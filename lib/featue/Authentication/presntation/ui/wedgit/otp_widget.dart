@@ -45,16 +45,16 @@ class OtpWidget extends StatelessWidget {
                   textAlign: TextAlign.center,
                   keyboardType: TextInputType.number,
                   maxLength: 1,
-                  cursorColor: AppColors.mainColor,
+                  cursorColor: 	Theme.of(context).colorScheme.primary,
                   decoration: InputDecoration(
                     counterText: "",
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8.r),
-                      borderSide: BorderSide(color: AppColors.borderColor),
+                      borderSide: BorderSide(color: Theme.of(context).cardColor),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8.r),
-                      borderSide: BorderSide(color: AppColors.mainColor),
+                      borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
                     ),
                   ),
                 ),

@@ -29,13 +29,14 @@ class _CreateNewPasswordScreenState
   void showPasswordChangedAlert(BuildContext context) {
     showDialog(
       context: context,
+      
       barrierDismissible: false,
       builder: (BuildContext context) {
         return Dialog(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20.r),
           ),
-          backgroundColor: Colors.white,
+          backgroundColor:Theme.of(context).scaffoldBackgroundColor,
           child: Padding(
             padding: const EdgeInsets.all(24.0),
             child: Column(
@@ -79,7 +80,7 @@ class _CreateNewPasswordScreenState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: 	Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(22),

@@ -6,7 +6,8 @@ import 'package:focus_flow/core/shared_wedgits/costumButton_wedgit.dart';
 import 'package:focus_flow/core/shared_wedgits/textForm_wedgit.dart';
 import 'package:focus_flow/core/themes/app_colors.dart';
 import 'package:focus_flow/core/themes/app_textStyle.dart';
-import 'package:focus_flow/featue/Home/presntation/ui/home_screen.dart';
+import 'package:focus_flow/featue/Tasks/presntation/ui/wedgit/deadline_widgrt.dart';
+
 import 'package:focus_flow/featue/Tasks/presntation/ui/wedgit/task_option_widget.dart';
 
 class AddTaskScreen extends StatefulWidget {
@@ -18,11 +19,17 @@ class AddTaskScreen extends StatefulWidget {
 
 class _AddTaskScreenState extends State<AddTaskScreen> {
   final TextEditingController titleController = TextEditingController();
-  final TextEditingController detailsController = TextEditingController();
+
+  final TextEditingController detailsController =
+      TextEditingController();
 
   String category = 'Personal';
-  String deadline = 'Now';
+
   String priority = 'Medium';
+
+  DateTime? deadlineDate;
+
+  TimeOfDay? deadlineTime;
 
   @override
   void dispose() {
@@ -31,20 +38,50 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
     super.dispose();
   }
 
+  Future<void> selectDeadline() async {
+    final DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: deadlineDate ?? DateTime.now(),
+      firstDate: DateTime.now(),
+      lastDate: DateTime(2100),
+    );
+
+    if (pickedDate == null) return;
+
+    final TimeOfDay? pickedTime = await showTimePicker(
+      context: context,
+      initialTime: deadlineTime ?? TimeOfDay.now(),
+    );
+
+    if (pickedTime == null) return;
+
+    setState(() {
+      deadlineDate = pickedDate;
+      deadlineTime = pickedTime;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor:
+          Theme.of(context).scaffoldBackgroundColor,
+
       body: SafeArea(
         child: SingleChildScrollView(
           padding: EdgeInsets.symmetric(horizontal: 24.w),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const AppbarWedgit(title: "Add Task",),
+
+              // App Bar
+              const AppbarWedgit(
+                title: "Add Task",
+              ),
+
               25.verticalSpace,
 
-        
+              // AI Hint
               Container(
                 width: double.infinity,
                 padding: EdgeInsets.symmetric(
@@ -52,7 +89,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                   vertical: 15.h,
                 ),
                 decoration: BoxDecoration(
-                  color: AppColors.borderColor,
+                  color: Theme.of(context).cardColor,
                   borderRadius: BorderRadius.circular(12.r),
                 ),
                 child: Row(
@@ -60,26 +97,37 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                     Icon(
                       Icons.auto_awesome,
                       size: 20.sp,
-                      color: AppColors.mainColor,
+                      color: Theme.of(context)
+                          .colorScheme
+                          .primary,
                     ),
+
                     SizedBox(width: 10.w),
+
                     Expanded(
                       child: Text(
                         'Let AI help you create the best plan',
-                        style: AppTextstyle.hintTextStyle(context),
+                        style:
+                            AppTextstyle.hintTextStyle(context),
                       ),
                     ),
                   ],
                 ),
               ),
 
-            28.verticalSpace,
+              28.verticalSpace,
 
+              // Task Title
               Text(
                 'What do you want to do ?',
-                style: AppTextstyle.h2(context).copyWith(fontWeight: FontWeight.bold),
+                style: AppTextstyle
+                    .h2(context)
+                    .copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
               ),
-12.verticalSpace,
+
+              12.verticalSpace,
 
               TextformWedgit(
                 controller: titleController,
@@ -87,17 +135,21 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                 isPass: false,
               ),
 
-             25.verticalSpace,
+              25.verticalSpace,
 
+              // Additional Details
               Text(
                 'Additional details ( optional )',
-                   style: AppTextstyle.h2(context).copyWith(fontWeight: FontWeight.bold),
-                
+                style: AppTextstyle
+                    .h2(context)
+                    .copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
               ),
-              
+
               14.verticalSpace,
 
-             
+              // Category
               TaskOptionWidget(
                 icon: Icons.category_outlined,
                 title: 'Category',
@@ -108,7 +160,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                   'Personal',
                   'Health',
                   'Social',
-                  'Admain',
+                  'Admin',
                   'Other',
                 ],
                 onSelected: (value) {
@@ -119,29 +171,18 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                 iconColor: AppColors.mainColor,
               ),
 
-             12.verticalSpace,
+              12.verticalSpace,
 
-              TaskOptionWidget(
-                icon: Icons.calendar_today_outlined,
-                title: 'Deadline',
-                value: deadline,
-                options: const [
-                  'Today',
-                  'Tomorrow',
-                  'This Week',
-                  'Next Week',
-                ],
-                onSelected: (value) {
-                  setState(() {
-                    deadline = value;
-                  });
-                },
-                iconColor: AppColors.mainColor,
+              // Deadline
+              DeadlineOptionWidget(
+                selectedDate: deadlineDate,
+                selectedTime: deadlineTime,
+                onTap: selectDeadline,
               ),
 
-            12.verticalSpace,
+              12.verticalSpace,
 
-             
+              // Priority
               TaskOptionWidget(
                 icon: Icons.flag_outlined,
                 title: 'Priority / Urgency',
@@ -156,31 +197,54 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                     priority = value;
                   });
                 },
-                iconColor: Colors.blue.shade50,
+                iconColor: Colors.blue,
               ),
 
-             18.verticalSpace,
-TextformWedgit(
-  controller: detailsController,
-  hintT: 'Add more details about your task...',
-  isPass: false,
- 
-),
+              18.verticalSpace,
 
-             30.verticalSpace,
-             MainbuttonWedgit(title:"Set Task",onTap: (){
-              Navigator.pushNamed(context, AppRoutes.homeScreen);
-             },),
-             30.verticalSpace,
-             Center(child: Text("Or",style: AppTextstyle.hint24(context),)),
-          20.verticalSpace,
-              MainbuttonWedgit(title: " ✨Create with Ai",
-              onTap: (){
-              Navigator.pushNamed(context,AppRoutes.aiCreatingPlanScreen);
-              },
+              // Details
+              TextformWedgit(
+                controller: detailsController,
+                hintT: 'Add more details about your task...',
+                isPass: false,
               ),
-        
-25.verticalSpace,
+
+              30.verticalSpace,
+
+              // Set Task
+              MainbuttonWedgit(
+                title: "Set Task",
+                onTap: () {
+                  Navigator.pushNamed(
+                    context,
+                    AppRoutes.homeScreen,
+                  );
+                },
+              ),
+
+              30.verticalSpace,
+
+              Center(
+                child: Text(
+                  "Or",
+                  style: AppTextstyle.hint24(context),
+                ),
+              ),
+
+              20.verticalSpace,
+
+              // AI
+              MainbuttonWedgit(
+                title: "✨ Create with AI",
+                onTap: () {
+                  Navigator.pushNamed(
+                    context,
+                    AppRoutes.aiCreatingPlanScreen,
+                  );
+                },
+              ),
+
+              25.verticalSpace,
             ],
           ),
         ),

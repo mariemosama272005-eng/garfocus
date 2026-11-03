@@ -8,8 +8,10 @@ import 'package:focus_flow/featue/Authentication/presntation/ui/create_new_passw
 import 'package:focus_flow/featue/Home/presntation/ui/home_screen.dart';
 import 'package:focus_flow/featue/Onboarding/presntation/ui/onborading_screen.dart';
 import 'package:focus_flow/featue/Settings/presntation/ui/apperance_screen.dart';
-import 'package:focus_flow/featue/Tasks/presntation/ui/addTask_screen.dart';
-import 'package:focus_flow/featue/Tasks/presntation/ui/ai_creating_plan_screen.dart';
+import 'package:focus_flow/featue/addTasks/presntation/ui/addTask_screen.dart';
+import 'package:focus_flow/featue/addTasks/presntation/ui/aiCreatingPlan.dart';
+import 'package:focus_flow/featue/tasks/presentation/ui/task_screen.dart';
+
 
 class AppRouter {
   static Route? onGenerateRoute(RouteSettings setting) {
@@ -34,6 +36,8 @@ class AppRouter {
         return MaterialPageRoute(builder:(_)=>AiCreatingPlanScreen());
       case AppRoutes.apperanceScreen:
         return MaterialPageRoute(builder:(_)=>AppearanceScreen());
+      case AppRoutes.taskScreen:
+        return MaterialPageRoute(builder:(_)=>TaskScreen());
       
       
      }

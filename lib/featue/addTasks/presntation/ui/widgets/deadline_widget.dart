@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:focus_flow/core/themes/app_colors.dart';
-import 'option_icon_widget.dart';
-import 'option_title_widget.dart';
+import 'package:focus_flow/featue/addTasks/presntation/ui/widgets/option_widget.dart';
+import 'package:focus_flow/featue/addTasks/presntation/ui/widgets/titleOption_widget.dart';
 
 class DeadlineOptionWidget extends StatelessWidget {
   final DateTime? selectedDate;

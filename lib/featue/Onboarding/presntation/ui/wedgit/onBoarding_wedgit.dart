@@ -45,8 +45,8 @@ class OnBoardingWedgit extends StatelessWidget {
         AnimatedSmoothIndicator(
           activeIndex: currentIndex,
           count: onboardingData.length,
-          effect: const ExpandingDotsEffect(
-            activeDotColor: AppColors.mainColor,
+          effect: ExpandingDotsEffect(
+            activeDotColor: Theme.of(context).colorScheme.primary,
             dotHeight: 8,
             dotWidth: 8,
             spacing: 4,

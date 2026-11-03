@@ -12,7 +12,7 @@ class RegisterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Padding(
         padding: const EdgeInsets.all(22),
         child: Column(
@@ -51,7 +51,7 @@ class RegisterScreen extends StatelessWidget {
                     child: Text(
                       "Login Now",
                       style: AppTextstyle.h2(context).copyWith(
-                        color: AppColors.mainColor,
+                        color: 	Theme.of(context).colorScheme.primary,
                       ),
                     ),
                   ),

@@ -20,12 +20,12 @@ class AiStep extends StatelessWidget {
             height: 22.w,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: const Color(0xFFF3F3F3),
+              color: Theme.of(context).cardColor,
             ),
             child: Icon(
               Icons.check,
               size: 14.sp,
-              color: Colors.black87,
+              color: Theme.of(context).colorScheme.onSurface,
             ),
           ),
 
@@ -37,7 +37,7 @@ class AiStep extends StatelessWidget {
               style: TextStyle(
                 fontSize: 13.sp,
                 fontWeight: FontWeight.w500,
-                color: Colors.grey.shade700,
+                color: Theme.of(context).colorScheme.onPrimary,
               ),
             ),
           ),

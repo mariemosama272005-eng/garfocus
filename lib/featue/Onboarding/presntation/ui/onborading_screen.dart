@@ -110,7 +110,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       } else {
                         Navigator.pushNamed(
                           context,
-                          AppRoutes.addTaskScreen,
+                          AppRoutes.loginScreen,
                         );
                       }
                     },

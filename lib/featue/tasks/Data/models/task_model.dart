@@ -1,3 +1,4 @@
+
 import 'package:hive/hive.dart';
 
 part 'task_model.g.dart';
@@ -25,6 +26,12 @@ class TaskModel extends HiveObject {
   @HiveField(6)
   String status;
 
+  @HiveField(7)
+  bool rewardClaimed;
+
+  @HiveField(8)
+  DateTime? completedAt;
+
   TaskModel({
     required this.title,
     required this.details,
@@ -33,5 +40,7 @@ class TaskModel extends HiveObject {
     this.deadlineMinutes,
     required this.priority,
     this.status = 'pending',
+    this.rewardClaimed = false,
+    this.completedAt,
   });
 }

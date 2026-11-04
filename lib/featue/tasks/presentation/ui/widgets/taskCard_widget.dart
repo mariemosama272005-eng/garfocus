@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:focus_flow/featue/tasks/Data/models/task_model.dart';
 
-import 'package:focus_flow/featue/tasks/data/models/task_model.dart' hide TaskModel;
+import 'package:focus_flow/featue/addTasks/presntation/ui/addTask_screen.dart';
+import 'package:focus_flow/featue/tasks/Data/models/task_model.dart';
 import 'package:focus_flow/featue/tasks/presentation/cubit/cubit/task_cubit_cubit.dart';
 
 class TaskCardWidget extends StatelessWidget {
@@ -30,12 +30,14 @@ class TaskCardWidget extends StatelessWidget {
     }
   }
 
-  String getDeadlineText(BuildContext context) {
+  String getDeadlineText(
+    BuildContext context,
+  ) {
     if (task.deadlineDate == null) {
       return '';
     }
 
-    final String date =
+    final date =
         '${task.deadlineDate!.day}/'
         '${task.deadlineDate!.month}/'
         '${task.deadlineDate!.year}';
@@ -44,130 +46,361 @@ class TaskCardWidget extends StatelessWidget {
       return date;
     }
 
-    final int minutes = task.deadlineMinutes!;
+    final minutes = task.deadlineMinutes!;
 
-    final TimeOfDay time = TimeOfDay(
+    final time = TimeOfDay(
       hour: minutes ~/ 60,
       minute: minutes % 60,
     );
 
-    final String formattedTime = time.format(context);
+    return '$date • ${time.format(context)}';
+  }
 
-    return '$date • $formattedTime';
+  void editTask(
+    BuildContext context,
+  ) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) =>
+            AddTaskScreen(task: task),
+      ),
+    );
+  }
+
+  Future<void> deleteTask(
+    BuildContext context,
+  ) async {
+    final confirm =
+        await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) {
+        return AlertDialog(
+          title:
+              const Text('Delete Task?'),
+          content: const Text(
+            'Are you sure you want to delete this task?',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(
+                  dialogContext,
+                  false,
+                );
+              },
+              child:
+                  const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(
+                  dialogContext,
+                  true,
+                );
+              },
+              child: const Text(
+                'Delete',
+                style: TextStyle(
+                  color: Colors.red,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (confirm != true ||
+        !context.mounted) {
+      return;
+    }
+
+    final success =
+        await context
+            .read<TaskCubitCubit>()
+            .deleteTask(task);
+
+    if (!context.mounted) {
+      return;
+    }
+
+    ScaffoldMessenger.of(context)
+        .showSnackBar(
+      SnackBar(
+        content: Text(
+          success
+              ? 'Task deleted successfully'
+              : 'Failed to delete task',
+        ),
+      ),
+    );
   }
 
   @override
-  Widget build(BuildContext context) {
-    final Color priorityColor = getPriorityColor();
+  Widget build(
+    BuildContext context,
+  ) {
+    final priorityColor =
+        getPriorityColor();
 
-    final bool isCompleted =
-        task.status == 'completed';
+    final isCompleted =
+        task.status.trim().toLowerCase() ==
+            'completed';
 
     return Container(
-      padding: EdgeInsets.all(15.w),
+      width: double.infinity,
+      padding: EdgeInsets.all(14.w),
       decoration: BoxDecoration(
-        color: Theme.of(context).cardColor,
-        borderRadius: BorderRadius.circular(14.r),
+        color:
+            Theme.of(context).cardColor,
+        borderRadius:
+            BorderRadius.circular(14.r),
         border: Border.all(
-          color: Theme.of(context).dividerColor,
+          color:
+              Theme.of(context)
+                  .dividerColor,
         ),
       ),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment:
+            CrossAxisAlignment.start,
         children: [
-          // Priority color
+          // =========================
+          // PRIORITY BAR
+          // =========================
+
           Container(
             width: 5.w,
-            height: 120.h,
-            decoration: BoxDecoration(
+            constraints:
+                BoxConstraints(
+              minHeight: 50.h,
+            ),
+            decoration:
+                BoxDecoration(
               color: priorityColor,
-              borderRadius: BorderRadius.circular(10.r),
+              borderRadius:
+                  BorderRadius.circular(
+                10.r,
+              ),
             ),
           ),
 
-          12.horizontalSpace,
+          10.horizontalSpace,
+
+          // =========================
+          // CONTENT
+          // =========================
 
           Expanded(
             child: Column(
               crossAxisAlignment:
                   CrossAxisAlignment.start,
               children: [
-                // Title
-                Text(
-                  task.title,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleMedium
-                      ?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        decoration: isCompleted
-                            ? TextDecoration.lineThrough
-                            : null,
+                // =========================
+                // TITLE + MENU
+                // =========================
+
+                Row(
+                  crossAxisAlignment:
+                      CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        task.title,
+                        maxLines: 2,
+                        overflow:
+                            TextOverflow.ellipsis,
+                        style: Theme.of(
+                          context,
+                        )
+                            .textTheme
+                            .titleMedium
+                            ?.copyWith(
+                              fontWeight:
+                                  FontWeight.bold,
+                              decoration:
+                                  isCompleted
+                                      ? TextDecoration
+                                          .lineThrough
+                                      : null,
+                            ),
                       ),
+                    ),
+
+                    SizedBox(
+                      width: 40.w,
+                      child:
+                          PopupMenuButton<
+                              String>(
+                        padding:
+                            EdgeInsets.zero,
+                        onSelected:
+                            (value) {
+                          if (value ==
+                              'edit') {
+                            editTask(
+                              context,
+                            );
+                          }
+
+                          if (value ==
+                              'delete') {
+                            deleteTask(
+                              context,
+                            );
+                          }
+                        },
+                        itemBuilder:
+                            (context) => [
+                          const PopupMenuItem(
+                            value: 'edit',
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons
+                                      .edit_outlined,
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                  'Edit',
+                                ),
+                              ],
+                            ),
+                          ),
+                          const PopupMenuItem(
+                            value: 'delete',
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons
+                                      .delete_outline,
+                                  color:
+                                      Colors.red,
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                  'Delete',
+                                  style:
+                                      TextStyle(
+                                    color:
+                                        Colors.red,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
 
-                // Details
+                // =========================
+                // DETAILS
+                // =========================
+
                 if (task.details.isNotEmpty) ...[
                   5.verticalSpace,
 
                   Text(
                     task.details,
                     maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context)
+                    overflow:
+                        TextOverflow.ellipsis,
+                    style: Theme.of(
+                      context,
+                    )
                         .textTheme
                         .bodySmall
                         ?.copyWith(
-                          decoration: isCompleted
-                              ? TextDecoration.lineThrough
-                              : null,
+                          decoration:
+                              isCompleted
+                                  ? TextDecoration
+                                      .lineThrough
+                                  : null,
                         ),
                   ),
                 ],
 
                 10.verticalSpace,
 
-                // Category + Priority
-                Row(
+                // =========================
+                // CATEGORY + PRIORITY
+                // =========================
+
+                Wrap(
+                  spacing: 8.w,
+                  runSpacing: 5.h,
                   children: [
                     Container(
-                      padding: EdgeInsets.symmetric(
+                      constraints:
+                          BoxConstraints(
+                        maxWidth:
+                            180.w,
+                      ),
+                      padding:
+                          EdgeInsets
+                              .symmetric(
                         horizontal: 9.w,
                         vertical: 5.h,
                       ),
-                      decoration: BoxDecoration(
+                      decoration:
+                          BoxDecoration(
                         color:
-                            priorityColor.withValues(alpha: 0.12),
+                            priorityColor
+                                .withValues(
+                          alpha: 0.12,
+                        ),
                         borderRadius:
-                            BorderRadius.circular(8.r),
+                            BorderRadius
+                                .circular(
+                          8.r,
+                        ),
                       ),
                       child: Text(
                         task.category,
+                        maxLines: 1,
+                        overflow:
+                            TextOverflow
+                                .ellipsis,
                         style: TextStyle(
                           fontSize: 11.sp,
-                          color: priorityColor,
-                          fontWeight: FontWeight.w600,
+                          color:
+                              priorityColor,
+                          fontWeight:
+                              FontWeight.w600,
                         ),
                       ),
                     ),
 
-                    8.horizontalSpace,
-
                     Text(
                       task.priority,
+                      maxLines: 1,
+                      overflow:
+                          TextOverflow.ellipsis,
                       style: TextStyle(
                         fontSize: 11.sp,
-                        color: priorityColor,
-                        fontWeight: FontWeight.w600,
+                        color:
+                            priorityColor,
+                        fontWeight:
+                            FontWeight.w600,
                       ),
                     ),
                   ],
                 ),
 
-                // Deadline
-                if (getDeadlineText(context).isNotEmpty) ...[
+                // =========================
+                // DEADLINE
+                // =========================
+
+                if (getDeadlineText(
+                  context,
+                ).isNotEmpty) ...[
                   8.verticalSpace,
 
                   Row(
@@ -175,7 +408,9 @@ class TaskCardWidget extends StatelessWidget {
                       Icon(
                         Icons.access_time,
                         size: 15.sp,
-                        color: Theme.of(context)
+                        color: Theme.of(
+                          context,
+                        )
                             .textTheme
                             .bodySmall
                             ?.color,
@@ -185,8 +420,16 @@ class TaskCardWidget extends StatelessWidget {
 
                       Expanded(
                         child: Text(
-                          getDeadlineText(context),
-                          style: Theme.of(context)
+                          getDeadlineText(
+                            context,
+                          ),
+                          maxLines: 1,
+                          overflow:
+                              TextOverflow
+                                  .ellipsis,
+                          style: Theme.of(
+                            context,
+                          )
                               .textTheme
                               .bodySmall,
                         ),
@@ -197,42 +440,58 @@ class TaskCardWidget extends StatelessWidget {
 
                 12.verticalSpace,
 
-                // Complete button
+                // =========================
+                // COMPLETE BUTTON
+                // =========================
+
                 SizedBox(
-                  height: 34.h,
-                  child: OutlinedButton.icon(
+                  width: double.infinity,
+                  height: 38.h,
+                  child:
+                      OutlinedButton.icon(
                     onPressed: () async {
-                      final bool wasCompleted =
-                          task.status == 'completed';
+                      final success =
+                          await context
+                              .read<
+                                  TaskCubitCubit>()
+                              .completeTask(
+                                task,
+                              );
 
-                      await context
-                          .read<TaskCubitCubit>()
-                          .completeTask(task as TaskModel);
+                      if (!context.mounted) {
+                        return;
+                      }
 
-                      if (!wasCompleted &&
-                          context.mounted) {
-                        ScaffoldMessenger.of(context)
+                      if (success) {
+                        ScaffoldMessenger
+                                .of(context)
                             .showSnackBar(
-                          const SnackBar(
+                          SnackBar(
                             content: Text(
-                              '🎉 Great job! You completed a task!',
+                              isCompleted
+                                  ? 'Task marked as pending'
+                                  : '🎉 Great job! Task completed!',
                             ),
-                            duration:
-                                Duration(seconds: 2),
                           ),
                         );
                       }
                     },
                     icon: Icon(
                       isCompleted
-                          ? Icons.check_circle
-                          : Icons.circle_outlined,
+                          ? Icons
+                              .check_circle
+                          : Icons
+                              .circle_outlined,
                       size: 17.sp,
                     ),
                     label: Text(
                       isCompleted
                           ? 'Completed'
                           : 'Complete',
+                      maxLines: 1,
+                      overflow:
+                          TextOverflow
+                              .ellipsis,
                     ),
                   ),
                 ),
@@ -243,5 +502,4 @@ class TaskCardWidget extends StatelessWidget {
       ),
     );
   }
-
 }

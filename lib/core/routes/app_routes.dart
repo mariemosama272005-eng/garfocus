@@ -11,6 +11,7 @@ static const String addTaskScreen="AddTaskScreen";
 static const String aiCreatingPlanScreen="AiCreatingPlanScreen";
 static const String apperanceScreen="ApperanceScreen";
 static const String taskScreen="TaskScreen";
+static const String bottomNavbarScreen="ButtomNavBarScreen";
 
 
 }

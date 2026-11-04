@@ -92,8 +92,8 @@ class _LoginFormState extends State<LoginForm> {
             title: "Login",
             onTap: () {
               if (formState.currentState?.validate() ?? false) {
-               //Navigator.pushNamed(context, AppRoutes.homeScreen);
-               Navigator.pushNamed(context, AppRoutes.addTaskScreen);
+               Navigator.pushNamed(context, AppRoutes.bottomNavbarScreen);
+              //Navigator.pushNamed(context, AppRoutes.addTaskScreen);
 
               }
             },

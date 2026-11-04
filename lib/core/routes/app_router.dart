@@ -10,6 +10,7 @@ import 'package:focus_flow/featue/Onboarding/presntation/ui/onborading_screen.da
 import 'package:focus_flow/featue/Settings/presntation/ui/apperance_screen.dart';
 import 'package:focus_flow/featue/addTasks/presntation/ui/addTask_screen.dart';
 import 'package:focus_flow/featue/addTasks/presntation/ui/aiCreatingPlan.dart';
+import 'package:focus_flow/featue/bottomNavBar/presentation/ui/bottomNavBar_screen.dart';
 import 'package:focus_flow/featue/tasks/presentation/ui/task_screen.dart';
 
 
@@ -38,6 +39,8 @@ class AppRouter {
         return MaterialPageRoute(builder:(_)=>AppearanceScreen());
       case AppRoutes.taskScreen:
         return MaterialPageRoute(builder:(_)=>TaskScreen());
+      case AppRoutes.bottomNavbarScreen:
+        return MaterialPageRoute(builder:(_)=>ButtomNavBarScreen());
       
       
      }

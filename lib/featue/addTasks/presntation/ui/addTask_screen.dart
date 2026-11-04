@@ -19,8 +19,12 @@ import 'package:focus_flow/featue/tasks/presentation/cubit/cubit/task_cubit_cubi
 
 
 class AddTaskScreen extends StatefulWidget {
-  const AddTaskScreen({super.key});
+ final TaskModel? task;
 
+const AddTaskScreen({
+  super.key,
+  this.task,
+});
   @override
   State<AddTaskScreen> createState() => _AddTaskScreenState();
 }
@@ -37,6 +41,29 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
 
   DateTime? deadlineDate;
   TimeOfDay? deadlineTime;
+  @override
+void initState() {
+  super.initState();
+
+  if (widget.task != null) {
+    titleController.text = widget.task!.title;
+    detailsController.text = widget.task!.details;
+
+    category = widget.task!.category;
+    priority = widget.task!.priority;
+
+    deadlineDate = widget.task!.deadlineDate;
+
+    if (widget.task!.deadlineMinutes != null) {
+      final minutes = widget.task!.deadlineMinutes!;
+
+      deadlineTime = TimeOfDay(
+        hour: minutes ~/ 60,
+        minute: minutes % 60,
+      );
+    }
+  }
+}
 
   @override
   void dispose() {
@@ -68,7 +95,16 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
     });
   }
 
-  Future<void> saveTask() async {
+ Future<void> saveTask() async {
+  if (titleController.text.trim().isEmpty) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Please enter a task title'),
+      ),
+    );
+    return;
+  }
+
   int? deadlineMinutes;
 
   if (deadlineTime != null) {
@@ -76,24 +112,32 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
         deadlineTime!.hour * 60 + deadlineTime!.minute;
   }
 
-  final TaskModel task = TaskModel(
-    title: titleController.text.trim(),
-    details: detailsController.text.trim(),
-    category: category,
-    deadlineDate: deadlineDate,
-    deadlineMinutes: deadlineMinutes,
-    priority: priority,
-    status: 'pending',
+  final TaskModel task = widget.task ?? TaskModel(
+    title: '',
+    details: '',
+    category: '',
+    priority: '',
   );
 
-  await context.read<TaskCubitCubit>().addTask(task);
+  task
+    ..title = titleController.text.trim()
+    ..details = detailsController.text.trim()
+    ..category = category
+    ..deadlineDate = deadlineDate
+    ..deadlineMinutes = deadlineMinutes
+    ..priority = priority;
+
+  final cubit = context.read<TaskCubitCubit>();
+
+  final success = widget.task == null
+      ? await cubit.addTask(task)
+      : await cubit.updateTask(task);
 
   if (!mounted) return;
 
-  Navigator.pushReplacementNamed(
-    context,
-    AppRoutes.taskScreen,
-  );
+  if (success) {
+    Navigator.pushNamed(context, AppRoutes.bottomNavbarScreen);
+  }
 }
   @override
   Widget build(BuildContext context) {
@@ -106,7 +150,9 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const AppbarWedgit(title: "Add Task"),
+             AppbarWedgit(
+  title: widget.task == null ? 'Add Task' : 'Edit Task',
+),
 
               25.verticalSpace,
 

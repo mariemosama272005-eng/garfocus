@@ -12,4 +12,9 @@ class AppRoutes {
   static const String apperanceScreen="ApperanceScreen";
   static const String focusScreen = '/focusScreen';
 
+
+static const String taskScreen="TaskScreen";
+static const String bottomNavbarScreen="ButtomNavBarScreen";
+
+
 }

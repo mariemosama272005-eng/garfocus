@@ -12,7 +12,7 @@ class RegisterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Padding(
         padding: const EdgeInsets.all(22),
         child: Column(
@@ -21,7 +21,7 @@ class RegisterScreen extends StatelessWidget {
 
             Text(
               "Hello! Register to\nget started",
-              style: AppTextstyle.h1,
+              style: AppTextstyle.h1(context),
             ),
 
             32.verticalSpace,
@@ -39,7 +39,7 @@ class RegisterScreen extends StatelessWidget {
                 children: [
                   Text(
                     "Already have an account? ",
-                    style: AppTextstyle.h2,
+                    style: AppTextstyle.h2(context),
                   ),
                   InkWell(
                     onTap: () {
@@ -50,8 +50,8 @@ class RegisterScreen extends StatelessWidget {
                     },
                     child: Text(
                       "Login Now",
-                      style: AppTextstyle.h2.copyWith(
-                        color: AppColors.mainColor,
+                      style: AppTextstyle.h2(context).copyWith(
+                        color: 	Theme.of(context).colorScheme.primary,
                       ),
                     ),
                   ),

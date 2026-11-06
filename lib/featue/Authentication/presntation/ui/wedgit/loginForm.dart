@@ -81,7 +81,7 @@ class _LoginFormState extends State<LoginForm> {
               },
               child: Text(
                 "Forget Password",
-                style: AppTextstyle.hintTextStyle,
+                style: AppTextstyle.hintTextStyle(context),
               ),
             ),
           ),
@@ -92,7 +92,9 @@ class _LoginFormState extends State<LoginForm> {
             title: "Login",
             onTap: () {
               if (formState.currentState?.validate() ?? false) {
-               Navigator.pushNamed(context, AppRoutes.homeScreen);
+               Navigator.pushNamed(context, AppRoutes.bottomNavbarScreen);
+              //Navigator.pushNamed(context, AppRoutes.addTaskScreen);
+
               }
             },
           ),

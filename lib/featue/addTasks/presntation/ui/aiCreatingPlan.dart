@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:focus_flow/core/shared_wedgits/appBar_wedgit.dart';
 import 'package:focus_flow/core/themes/app_colors.dart';
 import 'package:focus_flow/core/themes/app_textStyle.dart';
-import 'package:focus_flow/featue/Tasks/presntation/ui/wedgit/stepWedgit.dart';
+import 'package:focus_flow/featue/addTasks/presntation/ui/widgets/aiStep_widget.dart';
 import 'package:focus_flow/gen/assets.gen.dart';
 
 class AiCreatingPlanScreen extends StatelessWidget {
@@ -12,7 +12,7 @@ class AiCreatingPlanScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor:Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 24.w),
@@ -26,7 +26,7 @@ class AiCreatingPlanScreen extends StatelessWidget {
                 width: 175.w,
                 height: 150.h,
                 decoration: BoxDecoration(
-                  color: const Color(0xFFF1EEF7),
+                  color: Theme.of(context).cardColor,
                   borderRadius: BorderRadius.circular(35.r),
                 ),
                 child: Center(
@@ -42,7 +42,7 @@ class AiCreatingPlanScreen extends StatelessWidget {
               Text(
                 'AI is creating your plan ...',
                 textAlign: TextAlign.center,
-                style: AppTextstyle.h2,
+                style: AppTextstyle.h2(context),
               ),
 
             18.verticalSpace,
@@ -53,7 +53,7 @@ class AiCreatingPlanScreen extends StatelessWidget {
                 'category, urgency and organizing it\n'
                 'into your schedule.',
                 textAlign: TextAlign.center,
-                style: AppTextstyle.hintTextStyle
+                style: AppTextstyle.hintTextStyle(context)
                 ),
               
 
@@ -67,14 +67,14 @@ class AiCreatingPlanScreen extends StatelessWidget {
                   vertical: 16.h,
                 ),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Theme.of(context).colorScheme.outline,
                   borderRadius: BorderRadius.circular(12.r),
                   border: Border.all(
-                    color: Colors.grey.shade200,
+                    color:Theme.of(context).colorScheme.outline,
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.03),
+                      color: Colors.black.withValues(alpha: 0.03),
                       blurRadius: 8,
                       offset: const Offset(0, 2),
                     ),
@@ -106,7 +106,7 @@ class AiCreatingPlanScreen extends StatelessWidget {
                 height: 25.w,
                 child: CircularProgressIndicator(
                   strokeWidth: 2.5,
-                  color: Color(0xFF8151A5),
+                  color: Theme.of(context).colorScheme.primary,
                 ),
               ),
 

@@ -1,31 +1,42 @@
+
 import 'package:flutter/material.dart';
 import 'package:focus_flow/core/themes/app_colors.dart';
 
 class AppTextstyle {
-  static TextStyle h1 = TextStyle(
-    fontSize: 40,
-    fontWeight: FontWeight.bold,
-    color: AppColors.blackColor,
-  );
+  static TextStyle h1(BuildContext context) {
+    return TextStyle(
+      fontSize: 40,
+      fontWeight: FontWeight.bold,
+      color: Theme.of(context).colorScheme.onSurface,
+    );
+  }
 
-  static TextStyle h2 = TextStyle(
-    fontSize: 24,
-    color: AppColors.blackColor,
-  );
+  static TextStyle h2(BuildContext context) {
+    return TextStyle(
+      fontSize: 24,
+      color: Theme.of(context).colorScheme.onSurface,
+    );
+  }
 
-  static TextStyle hint24 = TextStyle(
-    fontSize: 24,
-    color: AppColors.hintColor,
-  );
-  static TextStyle hintTextStyle=TextStyle(
-    fontSize: 18,
-color: AppColors.hintColor,
+  static TextStyle hint24(BuildContext context) {
+    return TextStyle(
+      fontSize: 24,
+      color: Theme.of(context).colorScheme.onSurfaceVariant,
+    );
+  }
 
-  );
-  
-  static TextStyle subTitle = TextStyle(
-    fontSize: 15,
-    color: AppColors.blackColor,
-    height: 1.4,
-  );
+  static TextStyle hintTextStyle(BuildContext context) {
+    return TextStyle(
+      fontSize: 18,
+      color: Theme.of(context).colorScheme.onSurfaceVariant,
+    );
+  }
+
+  static TextStyle subTitle(BuildContext context) {
+    return TextStyle(
+      fontSize: 15,
+      color: Theme.of(context).colorScheme.onSurface,
+      height: 1.4,
+    );
+  }
 }

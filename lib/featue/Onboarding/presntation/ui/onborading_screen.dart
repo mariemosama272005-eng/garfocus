@@ -54,7 +54,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     return BlocProvider(
       create: (_) => OnBoardingCubit(),
       child: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor:Theme.of(context).scaffoldBackgroundColor,
         body: SafeArea(
           child: BlocBuilder<OnBoardingCubit, OnBoardingState>(
             builder: (context, state) {
@@ -71,19 +71,19 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 children: [
                   Text(
                     onboardingData[currentIndex]['title'] as String,
-                    style: AppTextstyle.h1,
+                    style: AppTextstyle.h1(context),
                   ),
                   Text(
                     onboardingData[currentIndex]['title2'] as String,
-                    style: AppTextstyle.h1,
+                    style: AppTextstyle.h1(context),
                   ),
                   Text(
                     onboardingData[currentIndex]['subtitle'] as String,
-                    style: AppTextstyle.h2,
+                    style: AppTextstyle.h2(context),
                   ),
                   Text(
                     onboardingData[currentIndex]['subtitle2'] as String,
-                    style: AppTextstyle.h2,
+                    style: AppTextstyle.h2(context),
                   ),
                   Expanded(
                     flex: 3,
@@ -110,7 +110,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       } else {
                         Navigator.pushNamed(
                           context,
-                          AppRoutes.apperanceScreen,
+                          AppRoutes.loginScreen,
                         );
                       }
                     },

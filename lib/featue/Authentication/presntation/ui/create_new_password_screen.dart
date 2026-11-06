@@ -29,13 +29,14 @@ class _CreateNewPasswordScreenState
   void showPasswordChangedAlert(BuildContext context) {
     showDialog(
       context: context,
+      
       barrierDismissible: false,
       builder: (BuildContext context) {
         return Dialog(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20.r),
           ),
-          backgroundColor: Colors.white,
+          backgroundColor:Theme.of(context).scaffoldBackgroundColor,
           child: Padding(
             padding: const EdgeInsets.all(24.0),
             child: Column(
@@ -45,16 +46,16 @@ class _CreateNewPasswordScreenState
                 Assets.images.password4.image(),
                 20.verticalSpace,
                 Text(
-                  "Password Changed!",
-                  style: AppTextstyle.h2.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
+  "Password Changed!",
+  style: AppTextstyle.h2(context).copyWith(
+    fontWeight: FontWeight.bold,
+  ),
+  textAlign: TextAlign.center,
+),
                 10.verticalSpace,
                 Text(
                   "Your password has been changed successfully.",
-                  style: AppTextstyle.subTitle,
+                  style: AppTextstyle.subTitle(context),
                   textAlign: TextAlign.center,
                 ),
                 24.verticalSpace,
@@ -79,7 +80,7 @@ class _CreateNewPasswordScreenState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: 	Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(22),

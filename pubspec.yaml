@@ -1,4 +1,4 @@
-name: focus_flow
+﻿name: focus_flow
 description: "A new Flutter project."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -40,6 +40,8 @@ dependencies:
   carousel_slider: ^5.1.2
   smooth_page_indicator: ^3.0.0
   flutter_launcher_icons: ^0.14.4
+  audioplayers: ^6.8.1
+  just_audio: ^0.10.6
 
 flutter_test:
    sdk: flutter
@@ -85,6 +87,7 @@ flutter:
   #   - images/a_dot_ham.jpeg
    assets:
     - assets/images/
+    - assets/sounds/
   
 
   # An image asset can refer to one or more resolution-specific "variants", see

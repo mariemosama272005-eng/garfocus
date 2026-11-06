@@ -5,6 +5,7 @@ import 'package:focus_flow/featue/Authentication/presntation/ui/register_screen.
 import 'package:focus_flow/featue/Authentication/presntation/ui/forget_password_screen.dart';
 import 'package:focus_flow/featue/Authentication/presntation/ui/otp_screen.dart';
 import 'package:focus_flow/featue/Authentication/presntation/ui/create_new_password_screen.dart';
+import 'package:focus_flow/featue/FocusSession/presntation/ui/focus_screen.dart';
 import 'package:focus_flow/featue/Home/presntation/ui/home_screen.dart';
 import 'package:focus_flow/featue/Onboarding/presntation/ui/onborading_screen.dart';
 import 'package:focus_flow/featue/Settings/apperance_screen.dart';
@@ -12,6 +13,10 @@ import 'package:focus_flow/featue/Tasks/presntation/ui/addTask_screen.dart';
 import 'package:focus_flow/featue/Tasks/presntation/ui/ai_creating_plan_screen.dart';
 
 class AppRouter {
+  static RouteFactory? get onboarding => null;
+
+  static RouteFactory? get focusScreen => null;
+
   static Route? onGenerateRoute(RouteSettings setting) {
     switch (setting.name) {
       case AppRoutes.OnboardingScreen:
@@ -34,7 +39,8 @@ class AppRouter {
         return MaterialPageRoute(builder:(_)=>AiCreatingPlanScreen());
       case AppRoutes.apperanceScreen:
         return MaterialPageRoute(builder:(_)=>AppearanceScreen());
-      
+      case AppRoutes.focusScreen:
+        return MaterialPageRoute( builder: (_) => const FocusScreen());
       
      }
      }

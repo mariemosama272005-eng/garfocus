@@ -7,9 +7,9 @@ class AppRoutes {
   static const String otpScreen = "OtpScreen";
   static const String createNewPasswordScreen = "CreateNewPasswordScreen";
   static const String homeScreen = "HomeScreen";
-static const String addTaskScreen="AddTaskScreen";
-static const String aiCreatingPlanScreen="AiCreatingPlanScreen";
-static const String apperanceScreen="ApperanceScreen";
-
+  static const String addTaskScreen="AddTaskScreen";
+  static const String aiCreatingPlanScreen="AiCreatingPlanScreen";
+  static const String apperanceScreen="ApperanceScreen";
+  static const String focusScreen = '/focusScreen';
 
 }

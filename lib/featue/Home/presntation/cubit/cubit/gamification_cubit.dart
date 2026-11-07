@@ -1,32 +1,39 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:focus_flow/featue/Home/data/models/gamification_model.dart';
 import 'package:focus_flow/featue/Home/data/repo/gamification_repo.dart';
 
-class GamificationCubit
-    extends Cubit<GamificationModel> {
-  final GamificationRepository repository;
+class GamificationCubit extends Cubit<GamificationModel> {
+  final GamificationRepository _repository;
 
-  GamificationCubit(this.repository)
-      : super(repository.getData());
+  GamificationCubit(this._repository) : super(_repository.getData());
 
+  /// تحميل بيانات الـ Gamification الحالية
   Future<void> loadData() async {
-    emit(repository.getData());
+    try {
+      final data = _repository.getData();
+      emit(data);
+    } catch (e) {
+      // التعامل مع الخطأ بصمت أو طباعته
+    }
   }
 
-  // +10 XP
+  /// منح مكافأة إتمام المهمة (+XP & Level update)
   Future<void> rewardCompletedTask() async {
-    final newData =
-        await repository.completeTaskReward();
-
-    emit(newData);
+    try {
+      final newData = await _repository.completeTaskReward();
+      emit(newData);
+    } catch (e) {
+      // التعامل مع الخطأ
+    }
   }
 
-  // -10 XP
+  /// إلغاء مكافأة المهمة عند العودة للحالة المعلقة (-XP)
   Future<void> undoCompletedTask() async {
-    final newData =
-        await repository.undoCompletedTask();
-
-    emit(newData);
+    try {
+      final newData = await _repository.undoCompletedTask();
+      emit(newData);
+    } catch (e) {
+      // التعامل مع الخطأ
+    }
   }
 }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:focus_flow/core/shared_wedgits/appBar_wedgit.dart';
 import 'package:focus_flow/core/shared_wedgits/costumButton_wedgit.dart';
-import 'package:focus_flow/core/themes/app_colors.dart';
+
 import 'package:focus_flow/core/themes/app_textStyle.dart';
 import 'package:focus_flow/gen/assets.gen.dart';
 

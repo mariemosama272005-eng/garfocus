@@ -1,9 +1,28 @@
-
 import 'package:hive/hive.dart';
 
 part 'task_model.g.dart';
 
 @HiveType(typeId: 1)
+enum TaskPriority {
+  @HiveField(0)
+  low,
+  @HiveField(1)
+  medium,
+  @HiveField(2)
+  high,
+}
+
+@HiveType(typeId: 2)
+enum TaskStatus {
+  @HiveField(0)
+  pending,
+  @HiveField(1)
+  inProgress,
+  @HiveField(2)
+  completed,
+}
+
+@HiveType(typeId: 3)
 class TaskModel extends HiveObject {
   @HiveField(0)
   String title;
@@ -21,10 +40,10 @@ class TaskModel extends HiveObject {
   int? deadlineMinutes;
 
   @HiveField(5)
-  String priority;
+  TaskPriority priority;
 
   @HiveField(6)
-  String status;
+  TaskStatus status;
 
   @HiveField(7)
   bool rewardClaimed;
@@ -39,8 +58,23 @@ class TaskModel extends HiveObject {
     this.deadlineDate,
     this.deadlineMinutes,
     required this.priority,
-    this.status = 'pending',
+    this.status = TaskStatus.pending,
     this.rewardClaimed = false,
     this.completedAt,
   });
+
+ 
+  bool get isCompleted => status == TaskStatus.completed;
+
+  void completeTask() {
+    status = TaskStatus.completed;
+    completedAt = DateTime.now();
+  }
+
+  void claimReward() {
+    if (isCompleted && !rewardClaimed) {
+      rewardClaimed = true;
+      save(); 
+    }
+  }
 }

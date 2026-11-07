@@ -4,10 +4,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AppbarWedgit extends StatelessWidget {
   final String? title;
+  final VoidCallback? onBackPressed;
+  final List<Widget>? actions;
 
   const AppbarWedgit({
     super.key,
     this.title,
+    this.onBackPressed,
+    this.actions,
   });
 
   @override
@@ -21,7 +25,7 @@ class AppbarWedgit extends StatelessWidget {
       title: title != null ? Text(title!) : null,
       centerTitle: true,
       elevation: 0,
-
+      actions: actions,
       leading: Container(
         width: 41.w,
         height: 41.h,
@@ -32,7 +36,11 @@ class AppbarWedgit extends StatelessWidget {
         child: BackButton(
           color: colorScheme.onSurface,
           onPressed: () {
-            Navigator.pop(context);
+            if (onBackPressed != null) {
+              onBackPressed!();
+            } else {
+              Navigator.maybePop(context);
+            }
           },
         ),
       ),

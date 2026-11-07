@@ -172,10 +172,31 @@ class AppRouter {
       // FOCUS
 
       case AppRoutes.focusScreen:
+        final arguments = setting.arguments;
+
+        TaskModel? task;
+        TaskCubitCubit? taskCubit;
+
+        if (arguments is TaskModel) {
+          task = arguments;
+        } else if (arguments is Map<String, dynamic>) {
+          task = arguments['task'] as TaskModel?;
+          taskCubit = arguments['taskCubit'] as TaskCubitCubit?;
+        }
+
+        final selectedTask = task;
+        final selectedTaskCubit = taskCubit;
+
         return MaterialPageRoute(
           builder: (_) => BlocProvider<FocusCubit>(
-            create: (_) => FocusCubit(),
-            child: const FocusScreen(),
+            create: (_) => FocusCubit(
+              task: selectedTask,
+              taskCubit: selectedTaskCubit,
+            ),
+            child: FocusScreen(
+              task: selectedTask,
+              taskCubit: selectedTaskCubit,
+            ),
           ),
         );
 

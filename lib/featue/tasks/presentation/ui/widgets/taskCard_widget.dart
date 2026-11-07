@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:focus_flow/core/routes/app_routes.dart';
-
 import 'package:focus_flow/featue/addTasks/presntation/ui/addTask_screen.dart';
 import 'package:focus_flow/featue/tasks/Data/models/task_model.dart';
 import 'package:focus_flow/featue/tasks/presentation/cubit/cubit/task_cubit_cubit.dart';
@@ -50,12 +49,18 @@ class TaskCardWidget extends StatelessWidget {
 
   return InkWell(
   borderRadius: BorderRadius.circular(14.r),
-  onTap: () {
-    Navigator.pushNamed(
+  onTap: () async {
+    final result = await Navigator.pushNamed(
       context,
       AppRoutes.focusScreen,
-      arguments: task,
+      arguments: {
+        'task': task,
+        'taskCubit': context.read<TaskCubitCubit>(),
+      },
     );
+    if (result == true && context.mounted) {
+      context.read<TaskCubitCubit>().getTasks();
+    }
   },
   child: Container(
     width: double.infinity,
@@ -89,19 +94,14 @@ class TaskCardWidget extends StatelessWidget {
                   isCompleted: isCompleted,
                 ),
               ],
-
               10.verticalSpace,
-
               TaskCategoryAndPriority(
                 task: task,
                 priorityColor: priorityColor,
                 priorityName: _getPriorityName(),
               ),
-
               TaskDeadlineWidget(task: task),
-
               12.verticalSpace,
-
               TaskActionButton(
                 task: task,
                 isCompleted: isCompleted,

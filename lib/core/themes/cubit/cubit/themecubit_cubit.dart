@@ -16,7 +16,7 @@ class ThemecubitCubit extends Cubit<ThemecubitState> {
   Future<void> changeColor(Color color) async {
     await LocalHelper.setInt(
       themeColorKey,
-      color.value,
+      color.toARGB32(),
     );
 
     emit(

@@ -1,10 +1,14 @@
+
+import 'package:flutter/foundation.dart';
+
+@immutable
 class GamificationModel {
   final int xp;
   final int streak;
   final DateTime? lastCompletedDate;
   final List<String> achievementDays;
 
-  GamificationModel({
+  const GamificationModel({
     this.xp = 0,
     this.streak = 0,
     this.lastCompletedDate,
@@ -26,22 +30,42 @@ class GamificationModel {
     };
   }
 
-  factory GamificationModel.fromJson(
-    Map<String, dynamic> json,
-  ) {
+  factory GamificationModel.fromJson(Map<String, dynamic> json) {
+    final achievementDaysJson = json['achievementDays'];
+
     return GamificationModel(
-      xp: json['xp'] ?? 0,
-      streak: json['streak'] ?? 0,
-      lastCompletedDate:
-          json['lastCompletedDate'] != null
-              ? DateTime.parse(
-                  json['lastCompletedDate'],
-                )
-              : null,
-      achievementDays:
-          List<String>.from(
-        json['achievementDays'] ?? [],
-      ),
+      xp: json['xp'] is int
+          ? json['xp'] as int
+          : int.tryParse(json['xp']?.toString() ?? '') ?? 0,
+
+      streak: json['streak'] is int
+          ? json['streak'] as int
+          : int.tryParse(json['streak']?.toString() ?? '') ?? 0,
+
+      lastCompletedDate: json['lastCompletedDate'] != null
+          ? DateTime.tryParse(
+              json['lastCompletedDate'].toString(),
+            )
+          : null,
+
+      achievementDays: achievementDaysJson is List
+          ? achievementDaysJson.map((e) => e.toString()).toList()
+          : const [],
+    );
+  }
+
+  GamificationModel copyWith({
+    int? xp,
+    int? streak,
+    DateTime? lastCompletedDate,
+    List<String>? achievementDays,
+  }) {
+    return GamificationModel(
+      xp: xp ?? this.xp,
+      streak: streak ?? this.streak,
+      lastCompletedDate: lastCompletedDate ?? this.lastCompletedDate,
+      achievementDays: achievementDays ?? this.achievementDays,
     );
   }
 }
+

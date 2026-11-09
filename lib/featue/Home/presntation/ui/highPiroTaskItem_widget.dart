@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:focus_flow/core/routes/app_routes.dart';
+import 'package:focus_flow/featue/Home/presntation/cubit/cubit/gamification_cubit.dart';
 import 'package:focus_flow/featue/tasks/Data/models/task_model.dart';
 import 'package:focus_flow/featue/tasks/presentation/cubit/cubit/task_cubit_cubit.dart';
+
 class HighPriorityTaskItem extends StatelessWidget {
   final TaskModel task;
 
@@ -20,10 +22,12 @@ class HighPriorityTaskItem extends StatelessWidget {
           arguments: {
             'task': task,
             'taskCubit': context.read<TaskCubitCubit>(),
+            'gamificationCubit': context.read<GamificationCubit>(),
           },
         );
         if (result == true && context.mounted) {
           context.read<TaskCubitCubit>().getTasks();
+          context.read<GamificationCubit>().loadData();
         }
       },
       child: Container(

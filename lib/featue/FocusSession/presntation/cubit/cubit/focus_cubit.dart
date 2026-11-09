@@ -1,9 +1,11 @@
 import 'dart:async';
+import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:focus_flow/core/services/local/local_helper.dart';
 import 'package:focus_flow/featue/FocusSession/data/models/focus_model.dart';
 import 'package:focus_flow/featue/Home/data/repo/gamification_repo.dart';
+import 'package:focus_flow/featue/Home/presntation/cubit/cubit/gamification_cubit.dart';
 import 'package:focus_flow/featue/tasks/Data/models/task_model.dart';
 import 'package:focus_flow/featue/tasks/presentation/cubit/cubit/task_cubit_cubit.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -11,10 +13,12 @@ import 'package:just_audio/just_audio.dart';
 
 class FocusCubit extends Cubit<FocusStateModel> {
   final TaskCubitCubit? taskCubit;
+  final GamificationCubit? gamificationCubit;
   Timer? _timer;
   DateTime? _lastTickTime;
   final AudioPlayer _audioPlayer = AudioPlayer();
   bool _isDisposed = false;
+  bool _sessionRewardClaimed = false;
 
   // Break recommendation milestones in seconds:
   // 25m = 1500s, 50m = 3000s, 90m = 5400s
@@ -23,6 +27,7 @@ class FocusCubit extends Cubit<FocusStateModel> {
   FocusCubit({
     TaskModel? task,
     this.taskCubit,
+    this.gamificationCubit,
   }) : super(FocusStateModel(task: task)) {
     emit(state.copyWith(remainingSeconds: state.totalFocusTime));
   }
@@ -190,6 +195,7 @@ class FocusCubit extends Cubit<FocusStateModel> {
 
   void resetTimer() {
     _timer?.cancel();
+    _sessionRewardClaimed = false;
     emit(state.copyWith(
       currentState: TimerStateEnum.ready,
       remainingSeconds: state.totalFocusTime,
@@ -198,11 +204,7 @@ class FocusCubit extends Cubit<FocusStateModel> {
     ));
   }
 
-  /// Changes focus duration and automatically sets the corresponding break duration:
-  /// 25 min -> 5 min break
-  /// 45 min -> 10 min break
-  /// 60 min -> 15 min break
-  /// 90 min -> 15 min break
+  /// Changes focus duration and automatically sets the corresponding break duration
   void changeFocusDuration(int? minutes) {
     if (minutes == null) return;
     _timer?.cancel();
@@ -284,25 +286,47 @@ class FocusCubit extends Cubit<FocusStateModel> {
 
   /// Marks task as completed in Hive, records gamification rewards, and prepares summary
   Future<void> completeTimer() async {
-    if (state.isCompleting) return;
+    if (state.isCompleting || _sessionRewardClaimed) return;
 
     _timer?.cancel();
     emit(state.copyWith(isCompleting: true));
 
     try {
+      _sessionRewardClaimed = true;
+      final sessionMinutes = max(1, state.focusedStudySeconds ~/ 60);
+
+      // Award gamification rewards to Cubit or Repo
+      final effectiveGamificationCubit =
+          gamificationCubit ?? taskCubit?.gamificationCubit;
+
+      if (effectiveGamificationCubit != null) {
+        // Award Focus Session XP (+15 XP)
+        await effectiveGamificationCubit.rewardCompletedFocusSession(
+          minutes: sessionMinutes,
+        );
+
+        // Award Task XP if task is present and not yet claimed
+        if (state.task != null && !state.task!.rewardClaimed) {
+          state.task!.completeTask();
+          state.task!.rewardClaimed = true;
+          await effectiveGamificationCubit.rewardCompletedTask();
+        }
+      } else if (LocalHelper.prefs != null) {
+        final gamificationRepo = GamificationRepository(LocalHelper.prefs!);
+        await gamificationRepo.rewardCompletedFocusSession(
+          minutes: sessionMinutes,
+        );
+        if (state.task != null && !state.task!.rewardClaimed) {
+          state.task!.completeTask();
+          state.task!.rewardClaimed = true;
+          await gamificationRepo.completeTaskReward();
+        }
+      }
+
       if (state.task != null) {
         final task = state.task!;
         task.completeTask();
-
-        // Award gamification XP if not already claimed
-        if (!task.rewardClaimed) {
-          task.rewardClaimed = true;
-          if (LocalHelper.prefs != null) {
-            final gamificationRepo =
-                GamificationRepository(LocalHelper.prefs!);
-            await gamificationRepo.completeTaskReward();
-          }
-        }
+        task.rewardClaimed = true;
 
         // Save task in Hive box
         if (task.isInBox) {

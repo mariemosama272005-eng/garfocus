@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -36,13 +35,9 @@ import 'package:focus_flow/featue/tasks/presentation/cubit/cubit/task_cubit_cubi
 import 'package:focus_flow/featue/tasks/presentation/ui/task_screen.dart';
 
 class AppRouter {
-
   static Route? onGenerateRoute(RouteSettings setting) {
-
     switch (setting.name) {
-
       // ONBOARDING
-
       case AppRoutes.OnboardingScreen:
         return MaterialPageRoute(
           builder: (_) => BlocProvider<OnBoardingCubit>(
@@ -52,7 +47,6 @@ class AppRouter {
         );
 
       // AUTH
-
       case AppRoutes.loginScreen:
         return MaterialPageRoute(
           builder: (_) => const LoginScreen(),
@@ -79,12 +73,10 @@ class AppRouter {
         );
 
       // HOME
-
       case AppRoutes.homeScreen:
         return MaterialPageRoute(
           builder: (_) => MultiBlocProvider(
             providers: [
-
               BlocProvider<GamificationCubit>(
                 create: (_) => GamificationCubit(
                   GamificationRepository(
@@ -92,7 +84,6 @@ class AppRouter {
                   ),
                 ),
               ),
-
               BlocProvider<TaskCubitCubit>(
                 create: (context) => TaskCubitCubit(
                   TaskRepository(
@@ -107,11 +98,8 @@ class AppRouter {
         );
 
       // ADD TASK
-
       case AppRoutes.addTaskScreen:
-
         final arguments = setting.arguments;
-
         TaskModel? task;
         TaskCubitCubit? taskCubit;
 
@@ -124,14 +112,11 @@ class AppRouter {
           taskCubit = arguments['taskCubit'] as TaskCubitCubit?;
         }
 
-        // حفظ نسخة من البيانات لاستخدامها داخل builder
-
         final selectedTask = task;
         final selectedTaskCubit = taskCubit;
 
         return MaterialPageRoute(
           builder: (_) {
-
             if (selectedTaskCubit == null) {
               return const Scaffold(
                 body: Center(
@@ -147,7 +132,6 @@ class AppRouter {
                 selectedTaskCubit,
                 selectedTask,
               ),
-
               child: AddTaskScreen(
                 task: selectedTask,
               ),
@@ -156,42 +140,46 @@ class AppRouter {
         );
 
       // AI PLAN
-
       case AppRoutes.aiCreatingPlanScreen:
         return MaterialPageRoute(
           builder: (_) => const AiCreatingPlanScreen(),
         );
 
       // APPEARANCE
-
       case AppRoutes.apperanceScreen:
         return MaterialPageRoute(
           builder: (_) => const AppearanceScreen(),
         );
 
       // FOCUS
-
       case AppRoutes.focusScreen:
         final arguments = setting.arguments;
 
         TaskModel? task;
         TaskCubitCubit? taskCubit;
+        GamificationCubit? gamificationCubit;
 
         if (arguments is TaskModel) {
           task = arguments;
         } else if (arguments is Map<String, dynamic>) {
           task = arguments['task'] as TaskModel?;
           taskCubit = arguments['taskCubit'] as TaskCubitCubit?;
+          gamificationCubit =
+              arguments['gamificationCubit'] as GamificationCubit?;
         }
+
+        gamificationCubit ??= taskCubit?.gamificationCubit;
 
         final selectedTask = task;
         final selectedTaskCubit = taskCubit;
+        final selectedGamificationCubit = gamificationCubit;
 
         return MaterialPageRoute(
           builder: (_) => BlocProvider<FocusCubit>(
             create: (_) => FocusCubit(
               task: selectedTask,
               taskCubit: selectedTaskCubit,
+              gamificationCubit: selectedGamificationCubit,
             ),
             child: FocusScreen(
               task: selectedTask,
@@ -201,12 +189,10 @@ class AppRouter {
         );
 
       // TASK SCREEN
-
       case AppRoutes.taskScreen:
         return MaterialPageRoute(
           builder: (_) => MultiBlocProvider(
             providers: [
-
               BlocProvider<GamificationCubit>(
                 create: (_) => GamificationCubit(
                   GamificationRepository(
@@ -214,7 +200,6 @@ class AppRouter {
                   ),
                 ),
               ),
-
               BlocProvider<TaskCubitCubit>(
                 create: (context) => TaskCubitCubit(
                   TaskRepository(
@@ -224,28 +209,22 @@ class AppRouter {
                 )..getTasks(),
               ),
             ],
-
             child: const TaskScreen(),
           ),
         );
 
       // BOTTOM NAVBAR
-
       case AppRoutes.bottomNavbarScreen:
-
         int initialIndex = 0;
-
         final arguments = setting.arguments;
 
         if (arguments is Map<String, dynamic>) {
-          initialIndex =
-              arguments['initialIndex'] as int? ?? 0;
+          initialIndex = arguments['initialIndex'] as int? ?? 0;
         }
 
         return MaterialPageRoute(
           builder: (_) => MultiBlocProvider(
             providers: [
-
               BlocProvider<GamificationCubit>(
                 create: (_) => GamificationCubit(
                   GamificationRepository(
@@ -253,7 +232,6 @@ class AppRouter {
                   ),
                 ),
               ),
-
               BlocProvider<TaskCubitCubit>(
                 create: (context) => TaskCubitCubit(
                   TaskRepository(
@@ -263,7 +241,6 @@ class AppRouter {
                 )..getTasks(),
               ),
             ],
-
             child: ButtomNavBarScreen(
               initialIndex: initialIndex,
             ),

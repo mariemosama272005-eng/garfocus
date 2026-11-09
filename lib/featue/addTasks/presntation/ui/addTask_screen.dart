@@ -2,68 +2,62 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import 'package:focus_flow/core/routes/app_routes.dart';
 import 'package:focus_flow/core/shared_wedgits/appBar_wedgit.dart';
 import 'package:focus_flow/core/shared_wedgits/costumButton_wedgit.dart';
 import 'package:focus_flow/core/shared_wedgits/textForm_wedgit.dart';
-import 'package:focus_flow/core/themes/app_colors.dart';
 import 'package:focus_flow/core/themes/app_textStyle.dart';
+import 'package:focus_flow/featue/addTasks/presntation/ui/aiBanner_Widget.dart';
+import 'package:focus_flow/featue/addTasks/presntation/cubit/cubit/add_task_cubit.dart';
 import 'package:focus_flow/featue/addTasks/presntation/ui/widgets/deadline_widget.dart';
 import 'package:focus_flow/featue/addTasks/presntation/ui/widgets/taskOption_widget.dart';
+
 import 'package:focus_flow/featue/tasks/Data/models/task_model.dart';
 
-import 'package:focus_flow/featue/tasks/data/models/task_model.dart' hide TaskModel;
-import 'package:focus_flow/featue/tasks/presentation/cubit/cubit/task_cubit_cubit.dart';
+class AddTaskScreen extends StatelessWidget {
+  final TaskModel? task;
 
+  const AddTaskScreen({
+    super.key,
+    this.task,
+  });
 
-
-class AddTaskScreen extends StatefulWidget {
- final TaskModel? task;
-
-const AddTaskScreen({
-  super.key,
-  this.task,
-});
   @override
-  State<AddTaskScreen> createState() => _AddTaskScreenState();
-}
-
-class _AddTaskScreenState extends State<AddTaskScreen> {
-  final TextEditingController titleController =
-      TextEditingController();
-
-  final TextEditingController detailsController =
-      TextEditingController();
-
-  String category = 'Personal';
-  String priority = 'Medium';
-
-  DateTime? deadlineDate;
-  TimeOfDay? deadlineTime;
-  @override
-void initState() {
-  super.initState();
-
-  if (widget.task != null) {
-    titleController.text = widget.task!.title;
-    detailsController.text = widget.task!.details;
-
-    category = widget.task!.category;
-    priority = widget.task!.priority;
-
-    deadlineDate = widget.task!.deadlineDate;
-
-    if (widget.task!.deadlineMinutes != null) {
-      final minutes = widget.task!.deadlineMinutes!;
-
-      deadlineTime = TimeOfDay(
-        hour: minutes ~/ 60,
-        minute: minutes % 60,
-      );
-    }
+  Widget build(BuildContext context) {
+    return const AddTaskScreenBody();
   }
 }
+
+class AddTaskScreenBody extends StatefulWidget {
+  const AddTaskScreenBody({
+    super.key,
+  });
+
+  @override
+  State<AddTaskScreenBody> createState() =>
+      _AddTaskScreenBodyState();
+}
+
+class _AddTaskScreenBodyState
+    extends State<AddTaskScreenBody> {
+
+  late final TextEditingController titleController;
+  late final TextEditingController detailsController;
+
+  @override
+  void initState() {
+    super.initState();
+
+    final task = context.read<AddTaskCubit>().oldTask;
+
+    titleController = TextEditingController(
+      text: task?.title ?? '',
+    );
+
+    detailsController = TextEditingController(
+      text: task?.details ?? '',
+    );
+  }
 
   @override
   void dispose() {
@@ -72,239 +66,258 @@ void initState() {
     super.dispose();
   }
 
-  Future<void> selectDeadline() async {
-    final DateTime? pickedDate = await showDatePicker(
+  Future<void> _selectDeadline(
+    AddTaskCubit cubit,
+  ) async {
+    final DateTime? pickedDate =
+        await showDatePicker(
       context: context,
-      initialDate: deadlineDate ?? DateTime.now(),
+      initialDate:
+          cubit.deadlineDate ?? DateTime.now(),
       firstDate: DateTime.now(),
-      lastDate: DateTime(2100),
+      lastDate: DateTime(2027),
     );
 
-    if (pickedDate == null) return;
+    if (pickedDate == null || !mounted) {
+      return;
+    }
 
-    final TimeOfDay? pickedTime = await showTimePicker(
+    final TimeOfDay? pickedTime =
+        await showTimePicker(
       context: context,
-      initialTime: deadlineTime ?? TimeOfDay.now(),
+      initialTime:
+          cubit.deadlineTime ?? TimeOfDay.now(),
     );
 
-    if (pickedTime == null) return;
+    if (pickedTime == null || !mounted) {
+      return;
+    }
 
-    setState(() {
-      deadlineDate = pickedDate;
-      deadlineTime = pickedTime;
-    });
-  }
-
- Future<void> saveTask() async {
-  if (titleController.text.trim().isEmpty) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Please enter a task title'),
-      ),
+    cubit.setDeadline(
+      pickedDate,
+      pickedTime,
     );
-    return;
   }
 
-  int? deadlineMinutes;
+  Future<void> _saveTask() async {
 
-  if (deadlineTime != null) {
-    deadlineMinutes =
-        deadlineTime!.hour * 60 + deadlineTime!.minute;
-  }
-
-  final TaskModel task = widget.task ?? TaskModel(
-    title: '',
-    details: '',
-    category: '',
-    priority: '',
-  );
-
-  task
-    ..title = titleController.text.trim()
-    ..details = detailsController.text.trim()
-    ..category = category
-    ..deadlineDate = deadlineDate
-    ..deadlineMinutes = deadlineMinutes
-    ..priority = priority;
-
-  final cubit = context.read<TaskCubitCubit>();
-
-  final success = widget.task == null
-      ? await cubit.addTask(task)
-      : await cubit.updateTask(task);
-
-  if (!mounted) return;
-
-  if (success) {
-    Navigator.pushNamed(context, AppRoutes.bottomNavbarScreen);
-  }
-}
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor:
-          Theme.of(context).scaffoldBackgroundColor,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(horizontal: 24.w),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-             AppbarWedgit(
-  title: widget.task == null ? 'Add Task' : 'Edit Task',
-),
-
-              25.verticalSpace,
-
-              Container(
-                width: double.infinity,
-                padding: EdgeInsets.symmetric(
-                  horizontal: 16.w,
-                  vertical: 15.h,
-                ),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).cardColor,
-                  borderRadius: BorderRadius.circular(12.r),
-                ),
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.auto_awesome,
-                      size: 20.sp,
-                      color: Theme.of(context)
-                          .colorScheme
-                          .primary,
-                    ),
-                    SizedBox(width: 10.w),
-                    Expanded(
-                      child: Text(
-                        'Let AI help you create the best plan',
-                        style: AppTextstyle.hintTextStyle(
-                          context,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-              28.verticalSpace,
-
-              Text(
-                'What do you want to do ?',
-                style: AppTextstyle.h2(context).copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-
-              12.verticalSpace,
-
-              TextformWedgit(
-                controller: titleController,
-                hintT: 'What do you want to do?',
-                isPass: false,
-              ),
-
-              25.verticalSpace,
-
-              Text(
-                'Additional details ( optional )',
-                style: AppTextstyle.h2(context).copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-
-              14.verticalSpace,
-
-              TaskOptionWidget(
-                icon: Icons.category_outlined,
-                title: 'Category',
-                value: category,
-                options: const [
-                  'Study',
-                  'Work',
-                  'Personal',
-                  'Health',
-                  'Social',
-                  'Admin',
-                  'Other',
-                ],
-                onSelected: (value) {
-                  setState(() {
-                    category = value;
-                  });
-                },
-                iconColor: AppColors.mainColor,
-              ),
-
-              12.verticalSpace,
-
-              DeadlineOptionWidget(
-                selectedDate: deadlineDate,
-                selectedTime: deadlineTime,
-                onTap: selectDeadline,
-              ),
-
-              12.verticalSpace,
-
-              TaskOptionWidget(
-                icon: Icons.flag_outlined,
-                title: 'Priority / Urgency',
-                value: priority,
-                options: const [
-                  'Low',
-                  'Medium',
-                  'High',
-                ],
-                onSelected: (value) {
-                  setState(() {
-                    priority = value;
-                  });
-                },
-                iconColor: Colors.blue,
-              ),
-
-              18.verticalSpace,
-
-              TextformWedgit(
-                controller: detailsController,
-                hintT: 'Add more details about your task...',
-                isPass: false,
-              ),
-
-              30.verticalSpace,
-
-              MainbuttonWedgit(
-                title: "Set Task",
-                onTap: saveTask,
-
-              ),
-
-              30.verticalSpace,
-
-              Center(
-                child: Text(
-                  "Or",
-                  style: AppTextstyle.hint24(context),
-                ),
-              ),
-
-              20.verticalSpace,
-
-              MainbuttonWedgit(
-                title: "✨ Create with AI",
-                onTap: () {
-                  Navigator.pushNamed(
-                    context,
-                    AppRoutes.aiCreatingPlanScreen,
-                  );
-                },
-              ),
-
-              25.verticalSpace,
-            ],
+    if (titleController.text.trim().isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Please enter a task title',
+            style: AppTextstyle.subTitle(context),
           ),
         ),
+      );
+
+      return;
+    }
+
+    final cubit = context.read<AddTaskCubit>();
+    final success = await cubit.saveTask(
+      title: titleController.text.trim(),
+      details: detailsController.text.trim(),
+    );
+    if (!mounted) return;
+    if (success) {
+      Navigator.pop(context, true);
+    } else {
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'Failed to save task. Please try again.',
+          ),
+        ),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
+    return BlocConsumer<AddTaskCubit, AddTaskState>(
+      listener: (context, state) {},
+
+      builder: (context, state) {
+
+        final cubit = context.read<AddTaskCubit>();
+        final isEditing = cubit.oldTask != null;
+
+        return Scaffold(
+          backgroundColor:
+              Theme.of(context).scaffoldBackgroundColor,
+
+          body: SafeArea(
+            child: SingleChildScrollView(
+              physics:
+                  const BouncingScrollPhysics(),
+
+              padding: EdgeInsets.symmetric(
+                horizontal: 24.w,
+              ),
+
+              child: Column(
+                crossAxisAlignment:
+                    CrossAxisAlignment.start,
+
+                children: [
+
+                  AppbarWedgit(
+                    title: isEditing
+                        ? 'Edit Task'
+                        : 'Add Task',
+                  ),
+
+                  25.verticalSpace,
+
+                  const AiBannerWidget(),
+
+                  28.verticalSpace,
+
+                  const AddTaskSectionHeader(
+                    title: 'What do you want to do ?',
+                  ),
+
+                  12.verticalSpace,
+
+                  TextformWedgit(
+                    controller: titleController,
+                    hintT: 'What do you want to do?',
+                    isPass: false,
+                  ),
+
+                  25.verticalSpace,
+
+                  const AddTaskSectionHeader(
+                    title: 'Additional details ( optional )',
+                  ),
+
+                  14.verticalSpace,
+
+                  TaskOptionWidget(
+                    icon: Icons.category_outlined,
+                    title: 'Category',
+                    value: cubit.category,
+                    options: const [
+                      'Study',
+                      'Work',
+                      'Personal',
+                      'Health',
+                      'Social',
+                      'Admin',
+                      'Other',
+                    ],
+                    onSelected: (val) {
+                      cubit.setCategory(val);
+                    },
+                    iconColor: Colors.purple,
+                  ),
+
+                  12.verticalSpace,
+
+                  DeadlineOptionWidget(
+                    selectedDate: cubit.deadlineDate,
+                    selectedTime: cubit.deadlineTime,
+                    onTap: () => _selectDeadline(cubit),
+                  ),
+
+                  12.verticalSpace,
+
+                  TaskOptionWidget(
+                    icon: Icons.flag_outlined,
+                    title: 'Priority / Urgency',
+
+                    value:
+                        cubit.priority.name[0].toUpperCase() +
+                        cubit.priority.name.substring(1),
+
+                    options: const [
+                      'High',
+                      'Medium',
+                      'Low',
+                    ],
+
+                    onSelected: (value) {
+
+                      final priority =
+                          TaskPriority.values.firstWhere(
+                        (e) =>
+                            e.name.toLowerCase() ==
+                            value.toLowerCase(),
+                        orElse: () => TaskPriority.medium,
+                      );
+
+                      cubit.setPriority(priority);
+                    },
+
+                    iconColor: Colors.blue,
+                  ),
+
+                  18.verticalSpace,
+
+                  TextformWedgit(
+                    controller: detailsController,
+                    hintT:
+                        'Add more details about your task...',
+                    isPass: false,
+                  ),
+
+                  30.verticalSpace,
+
+                  MainbuttonWedgit(
+                    title: isEditing
+                        ? 'Update Task'
+                        : 'Set Task',
+                    onTap: () {
+                      _saveTask();
+                    },
+                  ),
+
+                  30.verticalSpace,
+
+                  Center(
+                    child: Text(
+                      'Or',
+                      style: AppTextstyle.hint24(context),
+                    ),
+                  ),
+
+                  20.verticalSpace,
+
+                  MainbuttonWedgit(
+                    title: '✨ Create with AI',
+                    onTap: () {
+                      Navigator.pushNamed(
+                        context,
+                        AppRoutes.aiCreatingPlanScreen,
+                      );
+                    },
+                  ),
+
+                  25.verticalSpace,
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+class AddTaskSectionHeader extends StatelessWidget {
+  final String title;
+  const AddTaskSectionHeader({
+    super.key,
+    required this.title,
+  });
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      title,
+      style: AppTextstyle.h2(context).copyWith(
+        fontWeight: FontWeight.bold,
       ),
     );
   }

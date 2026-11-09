@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'package:focus_flow/core/themes/app_colors.dart';
+
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class OnBoardingWedgit extends StatelessWidget {
@@ -50,7 +50,7 @@ class OnBoardingWedgit extends StatelessWidget {
             dotHeight: 8,
             dotWidth: 8,
             spacing: 4,
-            dotColor: AppColors.hintColor,
+            dotColor:Theme.of(context).colorScheme.onSecondaryContainer ,
           ),
         ),
       ],

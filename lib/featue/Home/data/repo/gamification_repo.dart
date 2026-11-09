@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:focus_flow/featue/Home/data/models/gamification_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -11,47 +12,53 @@ class GamificationRepository {
   GamificationRepository(this.prefs);
 
   GamificationModel getData() {
-    final savedData = prefs.getString(_key);
+    try {
+      final savedData = prefs.getString(_key);
 
-    if (savedData == null) {
-      return GamificationModel();
+      if (savedData == null || savedData.isEmpty) {
+        return const GamificationModel();
+      }
+
+      final decodedData = jsonDecode(savedData);
+
+      if (decodedData is! Map) {
+        return const GamificationModel();
+      }
+
+      return GamificationModel.fromJson(
+        Map<String, dynamic>.from(decodedData),
+      );
+    } catch (e) {
+      return const GamificationModel();
     }
-
-    return GamificationModel.fromJson(
-      jsonDecode(savedData) as Map<String, dynamic>,
-    );
   }
 
-  Future<void> saveData(
-    GamificationModel data,
-  ) async {
-    await prefs.setString(
-      _key,
-      jsonEncode(data.toJson()),
-    );
+  Future<void> saveData(GamificationModel data) async {
+    try {
+      final jsonString = jsonEncode(data.toJson());
+
+      await prefs.setString(_key, jsonString);
+    } catch (e) {
+      debugPrint('Gamification save error: $e');
+    }
   }
 
-  // Complete task = +10 XP
+  String _dateToString(DateTime date) {
+    return '${date.year}-${date.month}-${date.day}';
+  }
+
   Future<GamificationModel> completeTaskReward() async {
     final oldData = getData();
 
     final today = DateTime.now();
 
-    final todayKey =
-        '${today.year}-${today.month}-${today.day}';
+    final todayKey = _dateToString(today);
 
-    final yesterday =
-        today.subtract(
-      const Duration(days: 1),
+    final yesterdayKey = _dateToString(
+      today.subtract(const Duration(days: 1)),
     );
 
-    final yesterdayKey =
-        '${yesterday.year}-${yesterday.month}-${yesterday.day}';
-
-    final days =
-        List<String>.from(
-      oldData.achievementDays,
-    );
+    final days = List<String>.from(oldData.achievementDays);
 
     int newStreak = oldData.streak;
 
@@ -77,21 +84,13 @@ class GamificationRepository {
     return newData;
   }
 
-  // Uncomplete task = -10 XP
   Future<GamificationModel> undoCompletedTask() async {
     final oldData = getData();
 
-    final newXp = oldData.xp >= 10
-        ? oldData.xp - 10
-        : 0;
+    final newXp = oldData.xp >= 10 ? oldData.xp - 10 : 0;
 
-    final newData = GamificationModel(
+    final newData = oldData.copyWith(
       xp: newXp,
-      streak: oldData.streak,
-      lastCompletedDate:
-          oldData.lastCompletedDate,
-      achievementDays:
-          oldData.achievementDays,
     );
 
     await saveData(newData);

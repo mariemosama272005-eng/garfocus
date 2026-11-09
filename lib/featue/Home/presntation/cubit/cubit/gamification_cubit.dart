@@ -7,33 +7,44 @@ class GamificationCubit extends Cubit<GamificationModel> {
 
   GamificationCubit(this._repository) : super(_repository.getData());
 
-  /// تحميل بيانات الـ Gamification الحالية
+  /// Load current Gamification data from local storage
   Future<void> loadData() async {
     try {
       final data = _repository.getData();
       emit(data);
     } catch (e) {
-      // التعامل مع الخطأ بصمت أو طباعته
+      // Handle error silently
     }
   }
 
-  /// منح مكافأة إتمام المهمة (+XP & Level update)
+  /// Award task completion (+10 XP, streak, achievements)
   Future<void> rewardCompletedTask() async {
     try {
       final newData = await _repository.completeTaskReward();
       emit(newData);
     } catch (e) {
-      // التعامل مع الخطأ
+      // Handle error silently
     }
   }
 
-  /// إلغاء مكافأة المهمة عند العودة للحالة المعلقة (-XP)
+  /// Undo task completion (-10 XP)
   Future<void> undoCompletedTask() async {
     try {
       final newData = await _repository.undoCompletedTask();
       emit(newData);
     } catch (e) {
-      // التعامل مع الخطأ
+      // Handle error silently
+    }
+  }
+
+  /// Award focus session completion (+15 XP, focus minutes, streak, achievements)
+  Future<void> rewardCompletedFocusSession({int minutes = 25}) async {
+    try {
+      final newData =
+          await _repository.rewardCompletedFocusSession(minutes: minutes);
+      emit(newData);
+    } catch (e) {
+      // Handle error silently
     }
   }
 }
